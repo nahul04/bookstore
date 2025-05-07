@@ -1,0 +1,10 @@
+{
+    "_id": 1,
+      "title": "How to Grow Your Online Store",
+      "description": "Learn the best strategies to grow your online store in today's competitive market.",
+      "category": "business",
+      "trending": true,
+      "coverImage": "img1.png",
+      "oldPrice": 29.99,
+      "newPrice": 19.99
+    }
