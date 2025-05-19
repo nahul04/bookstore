@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import CartContext from '../context/CartContext';
-import { FaCreditCard, FaPaypal, FaMoneyBillWave } from 'react-icons/fa';
-import { RiBankFill } from 'react-icons/ri';
+import { FaCreditCard, FaMoneyBillWave } from 'react-icons/fa';
+
 
 const Payment = () => {
   const { cartItems, clearCart } = useContext(CartContext);
@@ -21,7 +21,6 @@ const Payment = () => {
     e.preventDefault();
     setIsProcessing(true);
     
-    // Simulate payment processing
     setTimeout(() => {
       setIsProcessing(false);
       setPaymentSuccess(true);
@@ -75,29 +74,7 @@ const Payment = () => {
         <div 
           style={{
             ...styles.methodCard,
-            borderColor: paymentMethod === 'paypal' ? '#6c0909' : '#ddd'
-          }}
-          onClick={() => setPaymentMethod('paypal')}
-        >
-          <FaPaypal style={{ ...styles.methodIcon, color: '#003087' }} />
-          <span>PayPal</span>
-        </div>
-        
-        <div 
-          style={{
-            ...styles.methodCard,
-            borderColor: paymentMethod === 'bankTransfer' ? '#6c0909' : '#ddd'
-          }}
-          onClick={() => setPaymentMethod('bankTransfer')}
-        >
-          <RiBankFill style={styles.methodIcon} />
-          <span>Bank Transfer</span>
-        </div>
-        
-        <div 
-          style={{
-            ...styles.methodCard,
-            borderColor: paymentMethod === 'cashOnDelivery' ? '#6c0909' : '#ddd'
+            borderColor: paymentMethod === 'cashOnDelivery' ? 'rgb(136, 16, 143)' : '#ddd'
           }}
           onClick={() => setPaymentMethod('cashOnDelivery')}
         >
@@ -187,29 +164,9 @@ const Payment = () => {
             style={styles.payButton}
             disabled={isProcessing}
           >
-            {isProcessing ? 'Processing...' : `Pay Rs. Rs.{(total * 1.05).toFixed(2)}`}
+            {isProcessing ? 'Processing...' : `Pay Rs. ${(total * 1.05).toFixed(2)}`}
           </button>
         </form>
-      )}
-      
-      {paymentMethod === 'paypal' && (
-        <div style={styles.altMethod}>
-          <p>You will be redirected to PayPal to complete your payment</p>
-          <button style={styles.payButton}>Proceed to PayPal</button>
-        </div>
-      )}
-      
-      {paymentMethod === 'bankTransfer' && (
-        <div style={styles.altMethod}>
-          <p>Please transfer the amount to our bank account:</p>
-          <div style={styles.bankDetails}>
-            <p><strong>Bank:</strong> Example Bank</p>
-            <p><strong>Account Name:</strong> BookStore Pvt Ltd</p>
-            <p><strong>Account Number:</strong> 1234567890</p>
-            <p><strong>IFSC Code:</strong> EXMP0001234</p>
-          </div>
-          <p style={styles.note}>Please include your order ID in the transaction reference.</p>
-        </div>
       )}
       
       {paymentMethod === 'cashOnDelivery' && (

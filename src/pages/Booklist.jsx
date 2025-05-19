@@ -135,7 +135,7 @@ const categories = [
       },
     ],
   },
-]
+] 
 const BookList = () => {
   const getCategoryStyle = (categoryName) => {
     const styles = {
