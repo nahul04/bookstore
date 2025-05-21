@@ -1,64 +1,77 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
+function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    localStorage.setItem('user', JSON.stringify(user)); // Save user
-  alert(`Registered: ${user.name}`);
-  window.location.href = '/login'; 
+    setIsLoading(true);
+    setError('');
 
-    // Basic validation
-    if (!email.includes('@')) {
-      setMessage('Please enter a valid email.');
-      return;
+    try {
+      const response = await fetch('http://localhost/bookstore/api/auth.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+
+        if (data.user.role === 'admin') {
+          navigate('/admin');
+        } else {
+          navigate('/');
+        }
+      } else {
+        setError(data.message || 'Incorrect email or password');
+      }
+    } catch (err) {
+      setError('Unable to contact the server');
+      console.error('Login error:', err);
+    } finally {
+      setIsLoading(false);
     }
-
-    if (password.length < 6) {
-      setMessage('Password must be at least 6 characters.');
-      return;
-    }
-
-   
-    setMessage(`Logged in as: ${email}`);
   };
 
   return (
     <div style={styles.container}>
       <h2 style={styles.heading}>Login</h2>
       <form onSubmit={handleLogin} style={styles.form}>
-        
-
         <input
-          id="email"
           type="email"
-          placeholder="Enter your email"
+          placeholder="Email"
           value={email}
+          style={styles.input}
           onChange={(e) => setEmail(e.target.value)}
           required
-          style={styles.input}
         />
-
-     
         <input
-          id="password"
           type="password"
-          placeholder="Enter your password"
+          placeholder="Password"
           value={password}
+          style={styles.input}
           onChange={(e) => setPassword(e.target.value)}
           required
-          style={styles.input}
         />
-
-        <button type="submit" style={styles.button}>Login</button>
-        {message && <p style={styles.message}>{message}</p>}
+        <button type="submit" style={styles.button} disabled={isLoading}>
+          {isLoading ? 'Logging in...' : 'Login'}
+        </button>
       </form>
+      {error && <p style={{ ...styles.message, color: 'red' }}>{error}</p>}
     </div>
   );
-};
+}
 
 const styles = {
   container: {
@@ -72,15 +85,12 @@ const styles = {
   heading: {
     textAlign: 'center',
     marginBottom: '1.5rem',
-    color: 'rgb(10, 10, 10)',
+    color: '#0A0A0A',
   },
   form: {
     display: 'flex',
     flexDirection: 'column',
     gap: '1rem',
-  },
-  label: {
-    fontWeight: 'bold',
   },
   input: {
     padding: '0.5rem',
