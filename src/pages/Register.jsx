@@ -9,7 +9,9 @@ const Register = () => {
 
   const handleRegister = (e) => {
     e.preventDefault();
+    localStorage.setItem('user', JSON.stringify(user));
     alert(`Registered: ${user.name}`);
+     window.location.href = '/login';
   };
 
   return (
@@ -61,6 +63,7 @@ const styles = {
     flexDirection: 'column',
     gap: '12px'
   },
+ 
   input: {
     padding: '10px',
     fontSize: '16px',
@@ -70,12 +73,13 @@ const styles = {
   button: {
     padding: '10px',
     fontSize: '16px',
-    backgroundColor: '#007bff',
+    backgroundColor: '   #4B0082',
     color: '#fff',
     border: 'none',
     borderRadius: '4px',
     cursor: 'pointer'
-  }
+  },
+  
 };
 
 export default Register;

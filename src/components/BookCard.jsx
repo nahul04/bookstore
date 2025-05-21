@@ -51,4 +51,4 @@ const BookCard = ({ title, image, author, price }) => {
   );
 };
 
-export default BookCard;//this comment
+export default BookCard;

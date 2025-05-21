@@ -1,4 +1,5 @@
-import React from 'react';
+
+import React, { useState, useEffect } from 'react';
 import BookCard from '../components/BookCard';
 import TheHobbit from '../assets/The Hobbit.jpg'; 
 import Orange from '../assets/Orange.png';
@@ -135,7 +136,7 @@ const categories = [
       },
     ],
   },
-]
+] 
 const BookList = () => {
   const getCategoryStyle = (categoryName) => {
     const styles = {
@@ -162,6 +163,20 @@ const BookList = () => {
       borderColor: '#ddd'
     };
   };
+
+
+  const [Books, setBooks] = useState([]);
+  
+
+
+  useEffect(() => {
+    // Fetch books from API
+    fetch('http://localhost:5000/books')
+      .then((response) => response.json())
+      .then((data) => setBooks(data))
+      .catch((error) => console.error('Error fetching books:', error));
+  }, []);
+  
 
   return (
     <div style={styles.container}>
