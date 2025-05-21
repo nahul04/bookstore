@@ -17,6 +17,8 @@ import Death from '../assets/death.jpg';
 import The from '../assets/The.jfif';
 import Secret from '../assets/secret.jfif';
 
+//fetch data 
+
 const categories = [
   {
     name: 'Fantasy',
