@@ -18,6 +18,8 @@ import AdminLogin from './Admin/AdminLogin';
 import ManageUsers from './Admin/ManageUser';
 import ManageBooks from './Admin/ManageBooks';
 import ViewOrders from './Admin/ViewOrders'; 
+import AddBook from './Admin/AddBook';
+import EditBook from './Admin/EditBook';
 
 function App() {
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
@@ -34,6 +36,9 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/payment" element={<Payment />} />
+          <Route path="/admin/add-book" element={<AddBook />} />
+          <Route path="/admin/edit-book/:id" element={<EditBook />} />
+
 
           {/* Admin routes */}
           <Route
