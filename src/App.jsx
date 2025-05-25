@@ -1,27 +1,54 @@
-import React from 'react';
+// src/App.js
+import React, { useState } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
 import Navbar from './components/Navbar';
 import Login from './pages/login';
 import Home from './pages/Home';
 import BookList from './pages/Booklist';
 import Cart from './pages/Cart';
-import { CartProvider } from './context/CartContext';
 import Register from './pages/Register';
 import Payment from './pages/payment';
+import { CartProvider } from './context/CartContext';
+
+// Admin Components
+import AdminDashboard from './Admin/AdminDashboard';
+import AdminLogin from './Admin/AdminLogin'; 
+import ManageUsers from './Admin/ManageUser';
+import ManageBooks from './Admin/ManageBooks';
+import ViewOrders from './Admin/ViewOrders'; 
 
 function App() {
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
+
   return (
     <CartProvider>
       <Router>
         <Navbar />
         <Routes>
+          {/* Normal user routes */}
           <Route path="/" element={<Home />} />
           <Route path="/categories" element={<BookList />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/payment" element={<Payment />} />
+
+          {/* Admin routes */}
+          <Route
+            path="/admin"
+            element={
+              isAdminLoggedIn ? (
+                <AdminDashboard />
+              ) : (
+                <AdminLogin onLogin={() => setIsAdminLoggedIn(true)} />
+              )
+            }
+          />
+          <Route path="/admin/books" element={<ManageBooks />} />
+          <Route path="/admin/users" element={<ManageUsers />} />
+          <Route path="/admin/orders" element={<ViewOrders />} />
         </Routes>
       </Router>
     </CartProvider>
