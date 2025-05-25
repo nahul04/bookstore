@@ -1,16 +1,26 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
+const AdminDashboard = ({ onLogout }) => {
+  const navigate = useNavigate();
 
-const AdminDashboard = () => {
+  const handleLogout = () => {
+    onLogout();
+    navigate('/');
+  };
+
   return (
     <div className="admin-dashboard">
       <h2>Admin Dashboard</h2>
-      <div className="admin-links">
-        <Link to="/admin/books">Manage Books</Link>
-        <Link to="/admin/users">Manage Users</Link>
-        <Link to="/admin/orders">View Orders</Link>
-      </div>
+      <nav>
+        <ul>
+          <li><Link to="/admin/books">Manage Books</Link></li>
+          <li><Link to="/admin/users">Manage Users</Link></li>
+          <li><Link to="/admin/orders">View Orders</Link></li>
+          <li><Link to="/admin/add-book">Add Book</Link></li>
+        </ul>
+        <button onClick={handleLogout}>Logout</button>
+      </nav>
     </div>
   );
 };
