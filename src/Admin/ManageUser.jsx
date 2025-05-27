@@ -1,26 +1,22 @@
+// src/admin/ManageUsers.jsx
 import React from 'react';
-import './admin.css';
+import AdminNavbar from './AdminNavbar';
 
 const ManageUsers = () => {
   const users = [
-    { id: 1, name: 'Ramya', email: 'ramya@gmail.com' },
+    { id: 1, name: 'User A', email: 'a@gmail.com' },
+    { id: 2, name: 'User B', email: 'b@gmail.com' }
   ];
 
   return (
-    <div className="admin-manage">
+    <div>
+      <AdminNavbar />
       <h2>Manage Users</h2>
-      <table>
-        <thead>
-          <tr><th>Name</th><th>Email</th></tr>
-        </thead>
-        <tbody>
-          {users.map(user => (
-            <tr key={user.id}>
-              <td>{user.name}</td><td>{user.email}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <ul>
+        {users.map(user => (
+          <li key={user.id}>{user.name} - {user.email}</li>
+        ))}
+      </ul>
     </div>
   );
 };

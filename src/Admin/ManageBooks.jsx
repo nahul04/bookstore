@@ -1,34 +1,23 @@
-
-import React, { useState } from 'react';
+// src/admin/ManageBooks.jsx
+import React from 'react';
+import AdminNavbar from './AdminNavbar';
+import { Link } from 'react-router-dom';
 
 const ManageBooks = () => {
-  const [books, setBooks] = useState([]);
-
-  const handleAddBook = () => {
-    //add a book
-    alert("Add Book Clicked");
-  };
-
-  const handleEditBook = id => {
-    //  edit a book
-    alert("Edit Book ID: " + id);
-  };
-
-  const handleDeleteBook = id => {
-    // delete a book
-    setBooks(books.filter(book => book.id !== id));
-  };
+  const books = [
+    { id: 1, title: 'Book One', author: 'Author A' },
+    { id: 2, title: 'Book Two', author: 'Author B' }
+  ];
 
   return (
     <div>
+      <AdminNavbar />
       <h2>Manage Books</h2>
-      <button onClick={handleAddBook}>Add New Book</button>
       <ul>
         {books.map(book => (
           <li key={book.id}>
-            {book.title}
-            <button onClick={() => handleEditBook(book.id)}>Edit</button>
-            <button onClick={() => handleDeleteBook(book.id)}>Delete</button>
+            {book.title} by {book.author}
+            <Link to={`/admin/edit-book/${book.id}`}>Edit</Link>
           </li>
         ))}
       </ul>
