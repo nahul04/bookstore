@@ -1,35 +1,33 @@
-// src/Admin/AddBook.jsx
+
 import React, { useState } from 'react';
+import AdminNavbar from './AdminNavbar';
 
 const AddBook = () => {
   const [book, setBook] = useState({
     title: '',
     author: '',
-    category: '',
     price: '',
-    description: ''
+    category: '',
+    image: ''
   });
 
-  const handleChange = e => {
-    setBook({ ...book, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('New Book:', book);
-    alert('Book added successfully!');
-    // Here, you can send this book data to backend API
+    console.log(book);
+    alert("Book added!");
+  
   };
 
   return (
-    <div className="form-container">
-      <h2>Add New Book</h2>
+    <div>
+      <AdminNavbar />
+      <h2>Add Book</h2>
       <form onSubmit={handleSubmit}>
-        <input type="text" name="title" placeholder="Title" onChange={handleChange} required />
-        <input type="text" name="author" placeholder="Author" onChange={handleChange} required />
-        <input type="text" name="category" placeholder="Category" onChange={handleChange} required />
-        <input type="number" name="price" placeholder="Price" onChange={handleChange} required />
-        <textarea name="description" placeholder="Description" onChange={handleChange} required />
+        <input type="text" placeholder="Title" onChange={e => setBook({...book, title: e.target.value})} required />
+        <input type="text" placeholder="Author" onChange={e => setBook({...book, author: e.target.value})} required />
+        <input type="number" placeholder="Price" onChange={e => setBook({...book, price: e.target.value})} required />
+        <input type="text" placeholder="Category" onChange={e => setBook({...book, category: e.target.value})} required />
+        <input type="text" placeholder="Image URL" onChange={e => setBook({...book, image: e.target.value})} required />
         <button type="submit">Add Book</button>
       </form>
     </div>

@@ -1,5 +1,5 @@
+// src/admin/AdminLogin.jsx
 import React, { useState } from 'react';
-import './admin.css';
 import { useNavigate } from 'react-router-dom';
 
 const AdminLogin = () => {
@@ -12,31 +12,17 @@ const AdminLogin = () => {
     if (email === 'admin@gmail.com' && password === 'admin123') {
       navigate('/admin/dashboard');
     } else {
-      alert('Invalid admin credentials');
+      alert('Invalid credentials');
     }
   };
 
   return (
-    <div className="admin-login">
+    <form onSubmit={handleLogin}>
       <h2>Admin Login</h2>
-      <form onSubmit={handleLogin}>
-        <input
-          type="email"
-          placeholder="Admin Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Admin Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Login</button>
-      </form>
-    </div>
+      <input type="email" placeholder="Email" onChange={e => setEmail(e.target.value)} required />
+      <input type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} required />
+      <button type="submit">Login</button>
+    </form>
   );
 };
 
