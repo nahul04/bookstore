@@ -1,12 +1,22 @@
-import React, { useContext } from 'react';
-import CartContext from '../context/CartContext';
+import React from 'react';
 
-
-const BookCard = ({ title, image, author, price }) => {
-  const { addToCart } = useContext(CartContext);
-
-  const handleAdd = () => {
-    addToCart({ title, image, author, price });
+const BookCard = ({ id, title, image, author, price }) => {
+  const handleAdd = async () => {
+    try {
+      const res = await fetch('http://localhost:5000/cart', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ book_id: id })
+      });
+      const data = await res.json();
+      if (!res.ok || data.error) {
+        alert(data.error || 'Failed to add to cart');
+      } else {
+        alert('Book added to cart!');
+      }
+    } catch (err) {
+      alert('Failed to add to cart');
+    }
   };
 
   const styles = {
