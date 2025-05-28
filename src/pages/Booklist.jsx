@@ -1,173 +1,34 @@
-
 import React, { useState, useEffect } from 'react';
 import BookCard from '../components/BookCard';
-import TheHobbit from '../assets/The Hobbit.jpg'; 
-import Orange from '../assets/Orange.png';
-import Sword from '../assets/Sword.jfif'; 
-import Lord from '../assets/Lord.jfif';
-import Sons from '../assets/Sons.webp';
-import Charming from '../assets/charming.png';
-import Mortals from '../assets/Mortals.jfif';
-import Moon from '../assets/Moon.jfif';
-import Womb from '../assets/Womb.webp';
-import Gilded from '../assets/Gilded.jpeg';
-import Home from '../assets/home.jfif';
-import Fire from '../assets/fire.webp';
-import Stand from '../assets/stand.png';
-import Death from '../assets/death.jpg';
-import The from '../assets/The.jfif';
-import Secret from '../assets/secret.jfif';
 
-const categories = [
-  {
-    name: 'Fantasy',
-    books: [
-      {
-        title: 'The Hobbit',
-        author: 'J.R.R. Tolkien',
-        image: TheHobbit,
-        price: 500,
-      },
-      {
-        title: 'The Priory of the Orange Tree',
-        author: 'Samantha Shannon',
-        image: Orange,
-        price: 800,
-      },
-      {
-        title: 'The Sword',
-        author: 'Olivia Wilson',
-        image: Sword,
-        price: 400,
-      },
-      {
-        title: 'To Bargain with Mortals',
-        author: 'R.A. Basu',
-        image: Mortals,
-        price: 1000,
-      },
-      {
-        title: 'The Lord of the Kings',
-        author: 'Sarah Geston',
-        image: Lord,
-        price: 900,
-      },
-      {
-        title: 'A Charming Tale',
-        author: 'Kara Dempsey',
-        image: Charming,
-        price: 1000,
-      },
-      {
-        title: 'Sons of the Oak',
-        author: 'Runelords',
-        image: Sons,
-        price: 800,
-      },
-      {
-        title: 'Marked by the Moon',
-        author: 'Helen Scott',
-        image: Moon,
-        price: 700,
-      },
-    ],
-  },
-  {
-    name: 'Novels',
-    books: [
-      {
-        title: 'Home to Harlem',
-        author: 'Claude McKay',
-        image: Home,
-        price: 1200,
-      },
-      {
-        title: 'The Gilded Ones',
-        author: 'Namina Forna',
-        image: Gilded,
-        price: 800,
-      },
-      {
-        title: 'Womb City',
-        author: 'Tlotlo Tsamaase',
-        image: Womb,
-        price: 1000,
-      },
-      {
-        title: 'Wings of Fire',
-        author: 'Escaping Peril',
-        image: Fire,
-        price: 950,
-      },
-      {
-        title: 'The Stand',
-        author: 'Stephen King',
-        image: Stand,
-        price: 1200,
-      },
-      {
-        title: 'Death in Her Hands',
-        author: 'Ottessa Moshfegh',
-        image: Death,
-        price: 1200,
-      },
-    ],
-  },
-  {
-    name: 'Self-Help',
-    books: [
-      {
-        title: 'How to Build Your Self Esteem',
-        author: 'Maya Jones',
-        image: Home,
-        price: 1500,
-      },
-      {
-        title: 'The Field of Freedom',
-        author: 'Jamie Chandler',
-        image: The,
-        price: 1800,
-      },
-      {
-        title: 'The Secret of Leadership',
-        author: 'Prakash Iyer',
-        image: Secret,
-        price: 1400,
-      },
-    ],
-  },
-] 
-const BookList = () => {
-  const getCategoryStyle = (categoryName) => {
-    const styles = {
-      Fantasy: {
-        bgColor: '#e6f7ff',
-        textColor: '#075985',
-        borderColor: '#bae6fd'
-      },
-      Novels: {
-        bgColor: '#f5eeff',
-        textColor: '#4b0082',
-        borderColor: '#d9c7ff'
-      },
-      'Self-Help': {
-        bgColor: '#f0fff4',
-        textColor: '#065f46',
-        borderColor: '#a7f3d0'
-      },  
-    };
-    
-    return styles[categoryName] || {
-      bgColor: '#f5f5f5',
-      textColor: '#333',
-      borderColor: '#ddd'
-    };
+const getCategoryStyle = (categoryName) => {
+  const styles = {
+    Fantasy: {
+      bgColor: '#e6f7ff',
+      textColor: '#075985',
+      borderColor: '#bae6fd'
+    },
+    Novels: {
+      bgColor: '#f5eeff',
+      textColor: '#4b0082',
+      borderColor: '#d9c7ff'
+    },
+    'Self-Help': {
+      bgColor: '#f0fff4',
+      textColor: '#065f46',
+      borderColor: '#a7f3d0'
+    },  
   };
-
-
-  const [Books, setBooks] = useState([]);
   
+  return styles[categoryName] || {
+    bgColor: '#f5f5f5',
+    textColor: '#333',
+    borderColor: '#ddd'
+  };
+};
 
+const BookList = () => {
+  const [books, setBooks] = useState([]);
 
   useEffect(() => {
     // Fetch books from API
@@ -176,17 +37,22 @@ const BookList = () => {
       .then((data) => setBooks(data))
       .catch((error) => console.error('Error fetching books:', error));
   }, []);
-  
+
+  // Group books by category
+  const groupedBooks = books.reduce((acc, book) => {
+    if (!acc[book.category]) acc[book.category] = [];
+    acc[book.category].push(book);
+    return acc;
+  }, {});
 
   return (
     <div style={styles.container}>
       <h2 style={styles.mainTitle}>Categories</h2>
-
-      {categories.map((category, catIndex) => {
-        const categoryStyle = getCategoryStyle(category.name);
+      {Object.entries(groupedBooks).map(([categoryName, booksInCategory], catIndex) => {
+        const categoryStyle = getCategoryStyle(categoryName);
         return (
-          <div 
-            key={catIndex} 
+          <div
+            key={catIndex}
             style={{
               ...styles.categorySection,
               backgroundColor: categoryStyle.bgColor,
@@ -201,16 +67,17 @@ const BookList = () => {
               color: categoryStyle.textColor,
               borderLeft: `4px solid ${categoryStyle.textColor}`
             }}>
-              {category.name}
+              {categoryName}
             </h3>
             <div style={styles.grid}>
-              {category.books.map((book, bookIndex) => (
+              {booksInCategory.map((book) => (
                 <BookCard
-                  key={bookIndex}
+                  key={book.id}
+                  id={book.id} // Pass id prop
                   title={book.title}
                   author={book.author}
-                  image={book.image}
                   price={book.price}
+                  image={book.image}
                 />
               ))}
             </div>
