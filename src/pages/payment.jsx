@@ -15,7 +15,7 @@ const Payment = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
 
-  const total = cartItems.reduce((sum, item) => sum + item.price, 0);
+  
 
   const handlePaymentSubmit = (e) => {
     e.preventDefault();
