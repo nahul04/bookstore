@@ -6,24 +6,27 @@ const Cart = () => {
 
   // Fetch cart items from backend
   useEffect(() => {
-    fetch('http://localhost:5000/backend/cart.php', {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user) return setLoading(false);
+
+    fetch(`http://localhost:5000/cart?user_id=${user.id}`, {
       method: 'GET',
-      headers: {
-        // Remove Content-Type for GET requests to PHP backend
-        // 'Authorization': 'Bearer ' + localStorage.getItem('token'), // Uncomment if using JWT
-      },
-      credentials: 'include', // If using cookies/session
     })
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error('Not authorized or error fetching cart');
+        return res.json();
+      })
       .then(data => {
-        // Defensive: handle if data is not as expected
         setCart({
           items: Array.isArray(data.items) ? data.items : [],
           total: parseFloat(data.total) || 0
         });
         setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch(() => {
+        setCart({ items: [], total: 0 });
+        setLoading(false);
+      });
   }, []);
 
   const total = cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
