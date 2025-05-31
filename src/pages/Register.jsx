@@ -7,11 +7,26 @@ const Register = () => {
     password: '',
   });
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    localStorage.setItem('user', JSON.stringify(user));
-    alert(`Registered: ${user.name}`);
-     window.location.href = '/login';
+    try {
+      const response = await fetch('http://localhost:5000/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(user)
+      });
+      const data = await response.json();
+      if (response.ok) {
+        alert('Registered successfully!');
+        window.location.href = '/login';
+      } else {
+        alert(data.error || 'Registration failed');
+      }
+    } catch (err) {
+      alert('Registration failed');
+    }
   };
 
   return (
