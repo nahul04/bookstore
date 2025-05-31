@@ -14,7 +14,7 @@ function Login() {
     setError('');
 
     try {
-      const response = await fetch('http://localhost/bookstore/api/auth.php', {
+      const response = await fetch('http://localhost:5000/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -25,16 +25,15 @@ function Login() {
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
-
+        // Optionally store a token if you implement JWT/session
         if (data.user.role === 'admin') {
           navigate('/admin');
         } else {
           navigate('/');
         }
       } else {
-        setError(data.message || 'Incorrect email or password');
+        setError(data.error || 'Incorrect email or password');
       }
     } catch (err) {
       setError('Unable to contact the server');
