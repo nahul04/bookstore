@@ -2,11 +2,16 @@ import React from 'react';
 
 const BookCard = ({ id, title, image, author, price }) => {
   const handleAdd = async () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user || !user.id) {
+      alert('Please login to add to cart');
+      return;
+    }
     try {
       const res = await fetch('http://localhost:5000/cart', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ book_id: id })
+        body: JSON.stringify({ user_id: user.id, book_id: id })
       });
       const data = await res.json();
       if (!res.ok || data.error) {
