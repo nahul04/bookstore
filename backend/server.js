@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql2');
 const bodyParser = require('body-parser');
+const bcrypt = require('bcrypt');
 
 const app = express();
 app.use(cors());
@@ -69,9 +70,10 @@ app.delete('/books/:id', (req, res) => {
 
 // --- CART ENDPOINTS ---
 
-// Get cart items for user_id=1
+// Get cart items for a user
 app.get('/cart', (req, res) => {
-  const userId = 1; // Replace with real user id in production
+  const userId = parseInt(req.query.user_id, 10);
+  if (!userId) return res.status(400).json({ error: 'user_id required' });
   const sql = `
     SELECT c.id, c.user_id, c.book_id, c.quantity, b.title, b.author, b.price, b.image
     FROM cart c
@@ -90,31 +92,27 @@ app.get('/cart', (req, res) => {
 
 // Add book to cart (increments quantity if exists)
 app.post('/cart', (req, res) => {
-  const userId = 1; // Replace with real user id in production
-  const { book_id } = req.body;
-  if (!book_id) return res.status(400).json({ error: 'book_id required' });
+  const { user_id, book_id } = req.body;
+  if (!user_id || !book_id) return res.status(400).json({ error: 'user_id and book_id required' });
 
-  // Check if already in cart
   db.query(
     'SELECT * FROM cart WHERE user_id = ? AND book_id = ?',
-    [userId, book_id],
+    [user_id, book_id],
     (err, results) => {
       if (err) return res.status(500).json({ error: 'DB error' });
       if (results.length > 0) {
-        // Increment quantity
         db.query(
           'UPDATE cart SET quantity = quantity + 1 WHERE user_id = ? AND book_id = ?',
-          [userId, book_id],
+          [user_id, book_id],
           (err2) => {
             if (err2) return res.status(500).json({ error: 'DB error' });
             res.json({ message: 'Cart updated' });
           }
         );
       } else {
-        // Insert new row
         db.query(
           'INSERT INTO cart (user_id, book_id, quantity) VALUES (?, ?, 1)',
-          [userId, book_id],
+          [user_id, book_id],
           (err2) => {
             if (err2) return res.status(500).json({ error: 'DB error' });
             res.json({ message: 'Added to cart' });
@@ -127,13 +125,12 @@ app.post('/cart', (req, res) => {
 
 // Remove a book from cart
 app.delete('/cart', (req, res) => {
-  const userId = 1; // Replace with real user id in production
-  const { book_id } = req.body;
-  if (!book_id) return res.status(400).json({ error: 'book_id required' });
+  const { user_id, book_id } = req.body;
+  if (!user_id || !book_id) return res.status(400).json({ error: 'user_id and book_id required' });
 
   db.query(
     'DELETE FROM cart WHERE user_id = ? AND book_id = ?',
-    [userId, book_id],
+    [user_id, book_id],
     (err) => {
       if (err) return res.status(500).json({ error: 'DB error' });
       res.json({ message: 'Removed from cart' });
@@ -143,11 +140,66 @@ app.delete('/cart', (req, res) => {
 
 // Clear all items from cart for user
 app.delete('/cart/clear', (req, res) => {
-  const userId = 1; // Replace with real user id in production
-  db.query('DELETE FROM cart WHERE user_id = ?', [userId], (err) => {
+  const { user_id } = req.body;
+  if (!user_id) return res.status(400).json({ error: 'user_id required' });
+  db.query('DELETE FROM cart WHERE user_id = ?', [user_id], (err) => {
     if (err) return res.status(500).json({ error: 'DB error' });
     res.json({ message: 'Cart cleared' });
   });
+});
+
+// --- USER REGISTRATION ENDPOINT ---
+app.post('/register', (req, res) => {
+  const { name, email, password } = req.body;
+  if (!name || !email || !password)
+    return res.status(400).json({ error: 'All fields are required' });
+
+  // Check if user exists
+  db.query(
+    'SELECT id FROM users WHERE name = ? OR email = ?',
+    [name, email],
+    (err, results) => {
+      if (err) return res.status(500).json({ error: 'DB error' });
+      if (results.length > 0)
+        return res.status(409).json({ error: 'User already exists' });
+
+      // Save password directly (no hashing)
+      db.query(
+        'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
+        [name, email, password],
+        (err2) => {
+          if (err2) return res.status(500).json({ error: 'Registration failed' });
+          res.json({ message: 'Registration successful' });
+        }
+      );
+    }
+  );
+});
+
+// --- USER LOGIN ENDPOINT ---
+app.post('/login', (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password)
+    return res.status(400).json({ error: 'Email and password required' });
+
+  db.query(
+    'SELECT id, name, email, password, role FROM users WHERE email = ?',
+    [email],
+    (err, results) => {
+      if (err) return res.status(500).json({ error: 'DB error' });
+      if (results.length === 0)
+        return res.status(401).json({ error: 'Incorrect email or password' });
+
+      const user = results[0];
+      // Compare plain password (since you store it as plain text)
+      if (user.password !== password)
+        return res.status(401).json({ error: 'Incorrect email or password' });
+
+      // Remove password before sending user object
+      delete user.password;
+      res.json({ user });
+    }
+  );
 });
 
 app.listen(5000, () => {
