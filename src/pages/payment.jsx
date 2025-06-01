@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import CartContext from '../context/CartContext';
+import { FaCreditCard, FaMoneyBillWave } from 'react-icons/fa';
 
 
 const Payment = () => {
@@ -14,7 +15,7 @@ const Payment = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
 
-  
+  const total = cartItems.reduce((sum, item) => sum + item.price, 0);
 
   const handlePaymentSubmit = (e) => {
     e.preventDefault();
@@ -187,7 +188,7 @@ const Payment = () => {
       )}
     </div>
   );
-};
+}; 
 
 const styles = {
   container: {
