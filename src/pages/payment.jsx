@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import CartContext from '../context/CartContext';
+import { FaCreditCard, FaMoneyBillWave } from 'react-icons/fa';
 
 
 const Payment = () => {
@@ -187,7 +188,7 @@ const Payment = () => {
       )}
     </div>
   );
-};
+}; 
 
 const styles = {
   container: {
