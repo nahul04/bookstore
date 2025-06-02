@@ -1,10 +1,12 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import CartContext from '../context/CartContext';
 import { FaCreditCard, FaMoneyBillWave } from 'react-icons/fa';
 
 
 const Payment = () => {
-  const { cartItems, clearCart } = useContext(CartContext);
+  const { clearCart } = useContext(CartContext);
+  const [cartItems, setCartItems] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [paymentMethod, setPaymentMethod] = useState('creditCard');
   const [cardDetails, setCardDetails] = useState({
     number: '',
@@ -14,18 +16,64 @@ const Payment = () => {
   });
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [paymentError, setPaymentError] = useState('');
 
-  const total = cartItems.reduce((sum, item) => sum + item.price, 0);
+  // Fetch cart items from backend to ensure accurate subtotal
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user) {
+      setCartItems([]);
+      setLoading(false);
+      return;
+    }
+    fetch(`http://localhost:5000/cart?user_id=${user.id}`, {
+      method: 'GET',
+    })
+      .then(res => res.json())
+      .then(data => {
+        setCartItems(Array.isArray(data.items) ? data.items : []);
+        setLoading(false);
+      })
+      .catch(() => {
+        setCartItems([]);
+        setLoading(false);
+      });
+  }, []);
 
-  const handlePaymentSubmit = (e) => {
+  // Calculate total including quantity
+  const subtotal = cartItems.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
+
+  // Calcula
+  const total =(subtotal * 1.05).toFixed(2);
+
+  const clearBackendCart = async () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user && user.id) {
+      const res = await fetch('http://localhost:5000/cart/clear', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: user.id })
+      });
+      return res.ok;
+    }
+    return false;
+  };
+
+  const handlePaymentSubmit = async (e) => {
     e.preventDefault();
     setIsProcessing(true);
-    
-    setTimeout(() => {
+    setPaymentError('');
+    // Fake payment processing
+    setTimeout(async () => {
+      const cleared = await clearBackendCart();
       setIsProcessing(false);
-      setPaymentSuccess(true);
-      clearCart();
-    }, 2000);
+      if (cleared) {
+        setPaymentSuccess(true);
+        clearCart();
+      } else {
+        setPaymentError('Payment succeeded but failed to clear cart. Please refresh.');
+      }
+    }, 1500);
   };
 
   const handleInputChange = (e) => {
@@ -36,6 +84,10 @@ const Payment = () => {
     }));
   };
 
+  if (loading) {
+    return <div style={{ textAlign: 'center', marginTop: '2rem' }}>Loading...</div>;
+  }
+
   if (paymentSuccess) {
     return (
       <div style={styles.successContainer}>
@@ -43,7 +95,7 @@ const Payment = () => {
           <h2 style={styles.successTitle}>Payment Successful!</h2>
           <p style={styles.successText}>Thank you for your purchase.</p>
           <p style={styles.successText}>Your order has been placed successfully.</p>
-          <p style={styles.successAmount}>Total Paid: Rs. {total.toFixed(2)}</p>
+          <p style={styles.successAmount}>Total Paid: Rs. {total}</p>
           <button 
             style={styles.continueShopping}
             onClick={() => window.location.href = '/'}
@@ -58,7 +110,11 @@ const Payment = () => {
   return (
     <div style={styles.container}>
       <h2 style={styles.header}>Payment Method</h2>
-      
+      {paymentError && (
+        <div style={{ color: 'red', marginBottom: '1rem', textAlign: 'center' }}>
+          {paymentError}
+        </div>
+      )}
       <div style={styles.paymentMethods}>
         <div 
           style={{
@@ -105,7 +161,7 @@ const Payment = () => {
               name="name"
               value={cardDetails.name}
               onChange={handleInputChange}
-              placeholder="John Doe"
+              placeholder="Uzair"
               style={styles.input}
               required
             />
@@ -143,7 +199,7 @@ const Payment = () => {
             <h3 style={styles.summaryTitle}>Order Summary</h3>
             <div style={styles.summaryRow}>
               <span>Subtotal:</span>
-              <span>Rs. {total.toFixed(2)}</span>
+              <span>Rs. {subtotal.toFixed(2)}</span>
             </div>
             <div style={styles.summaryRow}>
               <span>Shipping:</span>
@@ -151,11 +207,11 @@ const Payment = () => {
             </div>
             <div style={styles.summaryRow}>
               <span>Tax:</span>
-              <span>Rs. {(total * 0.05).toFixed(2)}</span>
+              <span>Rs. {(subtotal * 0.05).toFixed(2)}</span>
             </div>
             <div style={{ ...styles.summaryRow, ...styles.totalRow }}>
               <span>Total:</span>
-              <span>Rs. {(total * 1.05).toFixed(2)}</span>
+              <span>Rs. {total}</span>
             </div>
           </div>
           
@@ -164,7 +220,7 @@ const Payment = () => {
             style={styles.payButton}
             disabled={isProcessing}
           >
-            {isProcessing ? 'Processing...' : `Pay Rs. ${(total * 1.05).toFixed(2)}`}
+            {isProcessing ? 'Processing...' : `Pay Rs. ${total}`}
           </button>
         </form>
       )}
@@ -174,15 +230,23 @@ const Payment = () => {
           <p>Pay cash when your order is delivered</p>
           <button 
             style={styles.payButton}
-            onClick={() => {
+            onClick={async () => {
               setIsProcessing(true);
-              setTimeout(() => {
-                setPaymentSuccess(true);
-                clearCart();
+              setPaymentError('');
+              setTimeout(async () => {
+                const cleared = await clearBackendCart();
+                setIsProcessing(false);
+                if (cleared) {
+                  setPaymentSuccess(true);
+                  clearCart();
+                } else {
+                  setPaymentError('Order placed but failed to clear cart. Please refresh.');
+                }
               }, 1000);
             }}
+            disabled={isProcessing}
           >
-            Confirm Order (Rs. {total.toFixed(2)})
+            {isProcessing ? 'Processing...' : `Confirm Order (Rs. ${total})`}
           </button>
         </div>
       )}
