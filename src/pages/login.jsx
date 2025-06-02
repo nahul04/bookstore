@@ -68,6 +68,15 @@ function Login() {
         </button>
       </form>
       {error && <p style={{ ...styles.message, color: 'red' }}>{error}</p>}
+      <p style={{ marginTop: '1.5rem', textAlign: 'center' }}>
+        Don't have an account?{' '}
+        <a
+          href="/register"
+          style={{ color: '#4B0082', textDecoration: 'underline' }}
+        >
+          Register
+        </a>
+      </p>
     </div>
   );
 }
