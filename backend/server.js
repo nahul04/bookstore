@@ -2,7 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
-const bcrypt = require('bcrypt');
 
 const app = express();
 app.use(cors());
@@ -200,6 +199,14 @@ app.post('/login', (req, res) => {
       res.json({ user });
     }
   );
+});
+
+// Fake payment endpoint (optional, not required for your current flow)
+app.post('/payment', (req, res) => {
+  // Simulate payment processing delay
+  setTimeout(() => {
+    res.json({ success: true, message: 'Payment processed successfully' });
+  }, 1000);
 });
 
 app.listen(5000, () => {
