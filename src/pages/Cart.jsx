@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Cart = () => {
   const [cart, setCart] = useState({ items: [], total: 0 });
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   // Fetch cart items from backend
   useEffect(() => {
@@ -29,7 +31,23 @@ const Cart = () => {
       });
   }, []);
 
-  const total = cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  // Calculate total including quantity
+  const total = cart.items.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
+
+  const handlePayNow = () => {
+    navigate('/payment');
+  };
+
+  const handleClearCart = async () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user || !user.id) return;
+    await fetch('http://localhost:5000/cart/clear', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: user.id })
+    });
+    setCart({ items: [], total: 0 });
+  };
 
   return (
     <div style={styles.container}>
@@ -79,6 +97,8 @@ const Cart = () => {
                 <span>Rs. {total.toFixed(2)}</span>
               </div>
             </div>
+            <button style={styles.payButton} onClick={handlePayNow}>Pay Now</button>
+            <button style={styles.clearButton} onClick={handleClearCart}>Clear Cart</button>
           </div>
         </>
       )}
@@ -155,6 +175,8 @@ const styles = {
     backgroundColor: '#f9f9f9',
     padding: '1.5rem',
     borderRadius: '8px',
+    marginTop: '2rem',
+    textAlign: 'center'
   },
   totalContainer: {
     marginBottom: '1.5rem',
@@ -178,6 +200,29 @@ const styles = {
     color: '#222',
     fontSize: '1.1rem',
   },
+  payButton: {
+    marginTop: '1rem',
+    padding: '0.8rem 2.5rem',
+    backgroundColor: '#4B0082',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '6px',
+    fontSize: '1.1rem',
+    fontWeight: 'bold',
+    cursor: 'pointer',
+    marginRight: '1rem'
+  },
+  clearButton: {
+    marginTop: '1rem',
+    padding: '0.8rem 2.5rem',
+    backgroundColor: '#e53935',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '6px',
+    fontSize: '1.1rem',
+    fontWeight: 'bold',
+    cursor: 'pointer'
+  }
 };
 
 export default Cart;
