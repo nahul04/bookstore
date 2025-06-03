@@ -18,7 +18,7 @@ const Payment = () => {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [paymentError, setPaymentError] = useState('');
 
-  // Fetch cart items from backend to ensure accurate subtotal
+//subtotal
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'));
     if (!user) {
@@ -40,10 +40,10 @@ const Payment = () => {
       });
   }, []);
 
-  // Calculate total including quantity
+  
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
 
-  // Calcula
+  
   const total =(subtotal * 1.05).toFixed(2);
 
   const clearBackendCart = async () => {
@@ -63,7 +63,7 @@ const Payment = () => {
     e.preventDefault();
     setIsProcessing(true);
     setPaymentError('');
-    // Fake payment processing
+  
     setTimeout(async () => {
       const cleared = await clearBackendCart();
       setIsProcessing(false);
@@ -161,7 +161,7 @@ const Payment = () => {
               name="name"
               value={cardDetails.name}
               onChange={handleInputChange}
-              placeholder="Uzair"
+              placeholder="Name"
               style={styles.input}
               required
             />
@@ -253,24 +253,27 @@ const Payment = () => {
     </div>
   );
 }; 
-
 const styles = {
   container: {
-    maxWidth: '800px',
+    maxWidth: '900px',
     margin: '0 auto',
     padding: '2rem',
     fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+    color: '#333',
+    backgroundColor: '#fafafa',
   },
   header: {
-    fontSize: '1.8rem',
-    marginBottom: '1.5rem',
-    color: '#333',
+    fontSize: '2.5rem',
+    marginBottom: '2rem',
     textAlign: 'center',
+    color: '#880E4F',
+    fontWeight: '700',
+    letterSpacing: '0.5px',
   },
   paymentMethods: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-    gap: '1rem',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+    gap: '1.25rem',
     marginBottom: '2rem',
   },
   methodCard: {
@@ -279,22 +282,23 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     padding: '1.5rem',
-    border: '1px solid #ddd',
-    borderRadius: '8px',
+    border: '2px solid #e0e0e0',
+    borderRadius: '12px',
     cursor: 'pointer',
-    transition: 'all 0.2s ease',
+    transition: '0.3s ease',
     backgroundColor: '#fff',
+    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.05)',
   },
   methodIcon: {
-    fontSize: '2rem',
-    marginBottom: '0.5rem',
-    color: '#6c0909',
+    fontSize: '2.5rem',
+    marginBottom: '0.75rem',
+    color: '#880E4F',
   },
   form: {
     backgroundColor: '#fff',
     padding: '2rem',
-    borderRadius: '8px',
-    boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
+    borderRadius: '12px',
+    boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08)',
   },
   formGroup: {
     marginBottom: '1.5rem',
@@ -302,72 +306,69 @@ const styles = {
   row: {
     display: 'flex',
     gap: '1rem',
+    flexWrap: 'wrap',
   },
   label: {
     display: 'block',
     marginBottom: '0.5rem',
     color: '#555',
-    fontSize: '0.9rem',
+    fontSize: '1rem',
+    fontWeight: '600',
   },
   input: {
     width: '100%',
     padding: '0.75rem',
-    border: '1px solid #ddd',
-    borderRadius: '4px',
+    border: '1px solid #ccc',
+    borderRadius: '8px',
     fontSize: '1rem',
+    transition: '0.2s',
+    outline: 'none',
   },
   summary: {
-    backgroundColor: '#f9f9f9',
-    padding: '1.5rem',
-    borderRadius: '8px',
+    backgroundColor: '#fff0f5',
+    padding: '1.75rem',
+    borderRadius: '12px',
     margin: '2rem 0',
+    border: '1px solid #f0d9e7',
   },
   summaryTitle: {
     marginTop: 0,
-    marginBottom: '1rem',
-    color: '#333',
+    marginBottom: '1.2rem',
+    color: '#880E4F',
+    fontSize: '1.3rem',
+    fontWeight: '700',
   },
   summaryRow: {
     display: 'flex',
     justifyContent: 'space-between',
     marginBottom: '0.75rem',
-    color: '#555',
+    color: '#444',
   },
   totalRow: {
-    borderTop: '1px solid #ddd',
+    borderTop: '1px solid #ccc',
     paddingTop: '0.75rem',
-    fontWeight: '600',
-    color: '#333',
+    fontWeight: '700',
+    fontSize: '1.15rem',
+    color: '#000',
   },
   payButton: {
     width: '100%',
     padding: '1rem',
-    backgroundColor: '#6c0909',
-    color: 'white',
+    backgroundColor: '#880E4F',
+    color: '#fff',
     border: 'none',
-    borderRadius: '4px',
-    fontSize: '1rem',
+    borderRadius: '8px',
+    fontSize: '1.05rem',
     fontWeight: '600',
     cursor: 'pointer',
-    transition: 'all 0.2s ease',
+    transition: 'background 0.3s ease',
   },
   altMethod: {
     backgroundColor: '#fff',
     padding: '2rem',
-    borderRadius: '8px',
-    boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
+    borderRadius: '12px',
+    boxShadow: '0 2px 12px rgba(0, 0, 0, 0.08)',
     textAlign: 'center',
-  },
-  bankDetails: {
-    textAlign: 'left',
-    backgroundColor: '#f9f9f9',
-    padding: '1rem',
-    borderRadius: '8px',
-    margin: '1rem 0',
-  },
-  note: {
-    fontSize: '0.9rem',
-    color: '#777',
   },
   successContainer: {
     display: 'flex',
@@ -377,38 +378,43 @@ const styles = {
     padding: '2rem',
   },
   successCard: {
-    backgroundColor: '#fff',
+    backgroundColor: '#ffffff',
     padding: '3rem',
-    borderRadius: '8px',
-    boxShadow: '0 2px 20px rgba(0,0,0,0.1)',
+    borderRadius: '14px',
+    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.12)',
     textAlign: 'center',
     maxWidth: '500px',
   },
   successTitle: {
-    color: '#6c0909',
+    color: '#880E4F',
+    fontSize: '2rem',
+    fontWeight: '700',
     marginBottom: '1rem',
   },
   successText: {
-    color: '#555',
-    marginBottom: '0.5rem',
+    color: '#444',
+    fontSize: '1.05rem',
+    marginBottom: '0.75rem',
   },
   successAmount: {
-    fontSize: '1.2rem',
-    fontWeight: '600',
+    fontSize: '1.4rem',
+    fontWeight: '700',
     margin: '1.5rem 0',
-    color: '#333',
+    color: '#000',
   },
   continueShopping: {
     padding: '0.75rem 1.5rem',
-    backgroundColor: '#6c0909',
-    color: 'white',
+    backgroundColor: '#2810c4',
+    color: '#fff',
     border: 'none',
-    borderRadius: '4px',
+    borderRadius: '8px',
     fontSize: '1rem',
     fontWeight: '600',
     cursor: 'pointer',
-    transition: 'all 0.2s ease',
+    transition: '0.3s ease',
   },
 };
+
+
 
 export default Payment;
