@@ -1,4 +1,4 @@
-// src/App.js
+
 import React, { useState } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Login from './pages/login';
 import Home from './pages/Home';
+import Aboutus from './pages/AboutUs';
 import BookList from './pages/Booklist';
 import Cart from './pages/Cart';
 import Register from './pages/Register';
@@ -29,10 +30,11 @@ function App() {
       <Router>
         <Navbar />
         <Routes>
-          {/* Normal user routes */}
+          
           <Route path="/" element={<Home />} />
           <Route path="/categories" element={<BookList />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/Aboutus" element={<Aboutus />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/payment" element={<Payment />} />
