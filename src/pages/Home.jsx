@@ -13,18 +13,27 @@ import hobbit from '../assets/hobbit.jpg';
 import hands from '../assets/hands.jfif';
 import which from '../assets/which.png';
 import inside from '../assets/Inside.png';
+import gilded from '../assets/gilded.jpeg';
+import Moon from '../assets/Moon.jfif';
+import Charming from "../assets/charming.png";
+import How from"../assets/How.webp";
+
 
 const featuredBooks = [
   { title: 'Harry Potter', image: harry },
   { title: 'Autumn Leaves', image: autumn },
   { title: 'The Hobbit', image: hobbit },
   { title: 'Helping Hands', image: hands },
-  { title: 'Which Path?', image: which },
+  { title: 'Which', image: which },
   { title: 'Inside the Mind', image: inside },
+  { title: 'Gilded', image: gilded },
+  { title: 'Moon', image: Moon },
+  {title: 'charming',image: Charming },
+  {title:'How',image:How}
 ];
 
 const Home = () => {
-  const [Home, setBooks] = useState([]);
+  const [books, setBooks] = useState([]);
 
   useEffect(() => {
     fetch('http://localhost:5000/books')
