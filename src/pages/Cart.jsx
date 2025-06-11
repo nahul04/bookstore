@@ -72,7 +72,7 @@ const Cart = () => {
                   <h4 style={styles.title}>{item.title}</h4>
                   <p style={styles.author}>by {item.author}</p>
                   <p style={styles.price}>Rs. {Number(item.price).toFixed(2)}</p>
-                  <p style={styles.quantity}>Qty: {item.quantity}</p>
+                  <p style={styles.quantity}>Quantity: {item.quantity}</p>
                 </div>
               </div>
             ))}

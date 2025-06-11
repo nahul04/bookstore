@@ -61,18 +61,22 @@
 }
 
 .category-fiction {
-  background: linear-gradient(to right, #68fac0, #1fef4c);
-  border-left: 6px solid #47f83d;
+  background: linear-gradient(to right, #41dd9f, #7ad28d);
+  border-left: 6px solid #80f979;
 }
 
 .category-self-help {
-  background: linear-gradient(to right, #cd6a85, #e95d92);
-  border-left: 6px solid #6d96de;
+  background: linear-gradient(to right, #f83f71, #ea81aa);
+  border-left: 6px solid #fd4893;
 }
 
 .category-horror {
   background: linear-gradient(to right, #c407a8, #08efef);
   border-left: 6px solid #f50ffd;
+}
+.category-fashion {
+  background: linear-gradient(to right, #74a5ef, #11b4b4);
+  border-left: 6px solid #407bab;
 }
 
 /* Filter Dropdown Styling */

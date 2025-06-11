@@ -220,7 +220,7 @@ const Payment = () => {
             style={styles.payButton}
             disabled={isProcessing}
           >
-            {isProcessing ? 'Processing...' : `Pay Rs. ${total}`}
+            {isProcessing ? 'Processing...' : ` Rs. ${total}`}
           </button>
         </form>
       )}
