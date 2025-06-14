@@ -22,7 +22,7 @@ const EditBook = () => {
   return (
     <div>
       <AdminNavbar />
-      <h2>Edit Book - ID: {id}</h2>
+      <h2>Edit Book {id}</h2>
       <form onSubmit={handleUpdate}>
         <input type="text" value={book.title} onChange={e => setBook({...book, title: e.target.value})} required />
         <input type="text" value={book.author} onChange={e => setBook({...book, author: e.target.value})} required />

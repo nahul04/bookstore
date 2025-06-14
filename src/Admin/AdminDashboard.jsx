@@ -6,13 +6,13 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // You can clear sessionStorage/localStorage here if used
-    navigate('/admin'); // Navigate back to AdminLogin
+   
+    navigate('/admin');
   };
 
   return (
     <div className="admin-dashboard">
-      <h2>Welcome, Admin</h2>
+      <h2>Welcome Admin</h2>
       <div className="dashboard-buttons">
         <button onClick={() => navigate('/admin/add-book')}>Add Book</button>
         <button onClick={() => navigate('/admin/manage-books')}>Manage Books</button>
