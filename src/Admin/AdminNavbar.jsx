@@ -6,12 +6,12 @@ const AdminNavbar = () => {
   return (
     <nav className="admin-navbar">
       <ul>
-        <li><Link to="/admin/dashboard">Dashboard</Link></li>
-        <li><Link to="/admin/add-book">Add Book</Link></li>
-        <li><Link to="/admin/manage-books">Manage Books</Link></li>
-        <li><Link to="/admin/manage-users">Manage Users</Link></li>
-        <li><Link to="/admin/view-orders">View Orders</Link></li>
-        <li><Link to="/admin">Logout</Link></li>
+        <Link to="/admin/dashboard"></Link>
+        <Link to="/admin/add-book"></Link>
+        <Link to="/admin/manage-books"></Link>
+        <Link to="/admin/manage-users"></Link>
+        <Link to="/admin/view-orders"></Link>
+        <Link to="/admin"></Link>
       </ul>
     </nav>
   );

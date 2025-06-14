@@ -58,8 +58,11 @@ function App() {
          <Route path="/admin/manage-users" element={<ManageUsers />} />
          <Route path="/admin/view-orders" element={<ViewOrders />} />
          <Route path="/admin" element={<AdminLogin />} />
+         <Route path="/admin/edit-book/:id" element={<EditBook />} />
+
 
         </Routes>
+        
       </Router>
     </CartProvider>
   );
