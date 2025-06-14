@@ -1,12 +1,25 @@
-
 import React from 'react';
-import AdminNavbar from './AdminNavbar';
+import { useNavigate } from 'react-router-dom';
+import './AdminDashboard.css';
 
 const AdminDashboard = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // You can clear sessionStorage/localStorage here if used
+    navigate('/admin'); // Navigate back to AdminLogin
+  };
+
   return (
-    <div>
-      <AdminNavbar />
-      <h2>Welcome to Admin Dashboard</h2>
+    <div className="admin-dashboard">
+      <h2>Welcome, Admin</h2>
+      <div className="dashboard-buttons">
+        <button onClick={() => navigate('/admin/add-book')}>Add Book</button>
+        <button onClick={() => navigate('/admin/manage-books')}>Manage Books</button>
+        <button onClick={() => navigate('/admin/manage-users')}> Manage Users</button>
+        <button onClick={() => navigate('/admin/view-orders')}> View Orders</button>
+        <button className="logout-button" onClick={handleLogout}> Logout</button>
+      </div>
     </div>
   );
 };

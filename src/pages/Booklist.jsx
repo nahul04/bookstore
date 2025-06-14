@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import BookCard from '../components/BookCard';
 import './BookList.css';
 
+
 // Category-specific styling
 const getCategoryStyle = (categoryName) => {
   const styles = {
