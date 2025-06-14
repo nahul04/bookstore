@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import CartContext from '../context/CartContext';
-import { FaCreditCard, FaMoneyBillWave } from 'react-icons/fa';
-
+import { FaCreditCard } from 'react-icons/fa';
 
 const Payment = () => {
   const { clearCart } = useContext(CartContext);
@@ -18,7 +17,6 @@ const Payment = () => {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [paymentError, setPaymentError] = useState('');
 
-//subtotal
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'));
     if (!user) {
@@ -26,9 +24,7 @@ const Payment = () => {
       setLoading(false);
       return;
     }
-    fetch(`http://localhost:5000/cart?user_id=${user.id}`, {
-      method: 'GET',
-    })
+    fetch(`http://localhost:5000/cart?user_id=${user.id}`)
       .then(res => res.json())
       .then(data => {
         setCartItems(Array.isArray(data.items) ? data.items : []);
@@ -40,11 +36,8 @@ const Payment = () => {
       });
   }, []);
 
-  
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
-
-  
-  const total =(subtotal * 1.05).toFixed(2);
+  const total = (subtotal * 1.05).toFixed(2);
 
   const clearBackendCart = async () => {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -63,7 +56,8 @@ const Payment = () => {
     e.preventDefault();
     setIsProcessing(true);
     setPaymentError('');
-  
+
+    // Simulate payment processing delay
     setTimeout(async () => {
       const cleared = await clearBackendCart();
       setIsProcessing(false);
@@ -84,9 +78,23 @@ const Payment = () => {
     }));
   };
 
-  if (loading) {
-    return <div style={{ textAlign: 'center', marginTop: '2rem' }}>Loading...</div>;
-  }
+  const handlePayPalPayment = async () => {
+    setIsProcessing(true);
+    setPaymentError('');
+    // Simulate PayPal processing delay
+    setTimeout(async () => {
+      const cleared = await clearBackendCart();
+      setIsProcessing(false);
+      if (cleared) {
+        setPaymentSuccess(true);
+        clearCart();
+      } else {
+        setPaymentError('PayPal payment received but cart not cleared. Please refresh.');
+      }
+    }, 1500);
+  };
+
+  if (loading) return <div style={{ textAlign: 'center' }}>Loading...</div>;
 
   if (paymentSuccess) {
     return (
@@ -116,7 +124,7 @@ const Payment = () => {
         </div>
       )}
       <div style={styles.paymentMethods}>
-        <div 
+        <div
           style={{
             ...styles.methodCard,
             borderColor: paymentMethod === 'creditCard' ? '#6c0909' : '#ddd'
@@ -126,16 +134,19 @@ const Payment = () => {
           <FaCreditCard style={styles.methodIcon} />
           <span>Credit/Debit Card</span>
         </div>
-        
-        <div 
+        <div
           style={{
             ...styles.methodCard,
-            borderColor: paymentMethod === 'cashOnDelivery' ? 'rgb(136, 16, 143)' : '#ddd'
+            borderColor: paymentMethod === 'paypal' ? '#003087' : '#ddd'
           }}
-          onClick={() => setPaymentMethod('cashOnDelivery')}
+          onClick={() => setPaymentMethod('paypal')}
         >
-          <FaMoneyBillWave style={styles.methodIcon} />
-          <span>Cash on Delivery</span>
+          <img 
+            src="/paypal.png" 
+            alt="PayPal" 
+            style={{ width: '80px', height: 'auto', marginBottom: '10px' }}
+          />
+          <span>PayPal</span>
         </div>
       </div>
 
@@ -151,9 +162,11 @@ const Payment = () => {
               placeholder="1234 5678 9012 3456"
               style={styles.input}
               required
+              maxLength={19}
+              pattern="\d{4} \d{4} \d{4} \d{4}"
+              title="Enter card number in format: 1234 5678 9012 3456"
             />
           </div>
-          
           <div style={styles.formGroup}>
             <label style={styles.label}>Cardholder Name</label>
             <input
@@ -166,7 +179,6 @@ const Payment = () => {
               required
             />
           </div>
-          
           <div style={styles.row}>
             <div style={{ ...styles.formGroup, flex: 1 }}>
               <label style={styles.label}>Expiry Date</label>
@@ -178,23 +190,28 @@ const Payment = () => {
                 placeholder="MM/YY"
                 style={styles.input}
                 required
+                maxLength={5}
+                pattern="(0[1-9]|1[0-2])\/?([0-9]{2})"
+                title="Enter expiry date in MM/YY format"
               />
             </div>
-            
             <div style={{ ...styles.formGroup, flex: 1 }}>
               <label style={styles.label}>CVV</label>
               <input
-                type="text"
+                type="password"
                 name="cvv"
                 value={cardDetails.cvv}
                 onChange={handleInputChange}
                 placeholder="123"
                 style={styles.input}
                 required
+                maxLength={4}
+                pattern="\d{3,4}"
+                title="Enter 3 or 4 digit CVV"
               />
             </div>
           </div>
-          
+
           <div style={styles.summary}>
             <h3 style={styles.summaryTitle}>Order Summary</h3>
             <div style={styles.summaryRow}>
@@ -214,207 +231,167 @@ const Payment = () => {
               <span>Rs. {total}</span>
             </div>
           </div>
-          
+
           <button 
             type="submit" 
             style={styles.payButton}
             disabled={isProcessing}
           >
-            {isProcessing ? 'Processing...' : ` Rs. ${total}`}
+            {isProcessing ? 'Processing...' : `Pay Rs. ${total}`}
           </button>
         </form>
       )}
-      
-      {paymentMethod === 'cashOnDelivery' && (
+
+      {paymentMethod === 'paypal' && (
         <div style={styles.altMethod}>
-          <p>Pay cash when your order is delivered</p>
+          <p>Click below to simulate PayPal payment.</p>
           <button 
-            style={styles.payButton}
-            onClick={async () => {
-              setIsProcessing(true);
-              setPaymentError('');
-              setTimeout(async () => {
-                const cleared = await clearBackendCart();
-                setIsProcessing(false);
-                if (cleared) {
-                  setPaymentSuccess(true);
-                  clearCart();
-                } else {
-                  setPaymentError('Order placed but failed to clear cart. Please refresh.');
-                }
-              }, 1000);
-            }}
+            style={{ ...styles.payButton, backgroundColor: '#003087' }}
+            onClick={handlePayPalPayment}
             disabled={isProcessing}
           >
-            {isProcessing ? 'Processing...' : `Confirm Order (Rs. ${total})`}
+            {isProcessing ? 'Processing PayPal...' : `Pay Rs. ${total} with PayPal`}
           </button>
         </div>
       )}
     </div>
   );
-}; 
+};
+
 const styles = {
   container: {
-    maxWidth: '900px',
-    margin: '0 auto',
-    padding: '2rem',
+    maxWidth: '500px',
+    margin: '2rem auto',
+    padding: '1rem',
+    border: '1px solid #ddd',
+    borderRadius: '8px',
     fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-    color: '#333',
-    backgroundColor: '#fafafa',
+    backgroundColor: '#fff'
   },
   header: {
-    fontSize: '2.5rem',
-    marginBottom: '2rem',
     textAlign: 'center',
-    color: '#880E4F',
-    fontWeight: '700',
-    letterSpacing: '0.5px',
+    marginBottom: '1rem',
+    color: '#6c0909'
   },
   paymentMethods: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-    gap: '1.25rem',
-    marginBottom: '2rem',
+    display: 'flex',
+    justifyContent: 'space-around',
+    marginBottom: '1.5rem',
   },
   methodCard: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '1.5rem',
-    border: '2px solid #e0e0e0',
-    borderRadius: '12px',
     cursor: 'pointer',
-    transition: '0.3s ease',
-    backgroundColor: '#fff',
-    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.05)',
+    padding: '1rem',
+    border: '2px solid #ddd',
+    borderRadius: '8px',
+    textAlign: 'center',
+    width: '150px',
+    userSelect: 'none',
+    transition: 'border-color 0.3s',
   },
   methodIcon: {
     fontSize: '2.5rem',
-    marginBottom: '0.75rem',
-    color: '#880E4F',
+    marginBottom: '0.5rem',
+    color: '#6c0909',
   },
   form: {
-    backgroundColor: '#fff',
-    padding: '2rem',
-    borderRadius: '12px',
-    boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08)',
+    display: 'flex',
+    flexDirection: 'column',
   },
   formGroup: {
-    marginBottom: '1.5rem',
+    marginBottom: '1rem',
+  },
+  label: {
+    display: 'block',
+    marginBottom: '0.3rem',
+    fontWeight: '600',
+    color: '#333',
+  },
+  input: {
+    width: '100%',
+    padding: '0.5rem',
+    fontSize: '1rem',
+    borderRadius: '4px',
+    border: '1px solid #ccc',
+    boxSizing: 'border-box'
   },
   row: {
     display: 'flex',
     gap: '1rem',
-    flexWrap: 'wrap',
-  },
-  label: {
-    display: 'block',
-    marginBottom: '0.5rem',
-    color: '#555',
-    fontSize: '1rem',
-    fontWeight: '600',
-  },
-  input: {
-    width: '100%',
-    padding: '0.75rem',
-    border: '1px solid #ccc',
-    borderRadius: '8px',
-    fontSize: '1rem',
-    transition: '0.2s',
-    outline: 'none',
+    marginBottom: '1rem',
   },
   summary: {
-    backgroundColor: '#fff0f5',
-    padding: '1.75rem',
-    borderRadius: '12px',
-    margin: '2rem 0',
-    border: '1px solid #f0d9e7',
+    backgroundColor: '#f7f7f7',
+    padding: '1rem',
+    borderRadius: '6px',
+    marginBottom: '1rem',
   },
   summaryTitle: {
-    marginTop: 0,
-    marginBottom: '1.2rem',
-    color: '#880E4F',
-    fontSize: '1.3rem',
-    fontWeight: '700',
+    marginBottom: '0.5rem',
+    color: '#6c0909',
   },
   summaryRow: {
     display: 'flex',
     justifyContent: 'space-between',
-    marginBottom: '0.75rem',
-    color: '#444',
+    marginBottom: '0.3rem',
   },
   totalRow: {
-    borderTop: '1px solid #ccc',
-    paddingTop: '0.75rem',
     fontWeight: '700',
-    fontSize: '1.15rem',
-    color: '#000',
+    borderTop: '1px solid #ccc',
+    paddingTop: '0.5rem',
   },
   payButton: {
-    width: '100%',
-    padding: '1rem',
-    backgroundColor: '#880E4F',
+    padding: '0.75rem',
+    backgroundColor: '#6c0909',
     color: '#fff',
+    fontWeight: '700',
+    fontSize: '1rem',
     border: 'none',
-    borderRadius: '8px',
-    fontSize: '1.05rem',
-    fontWeight: '600',
+    borderRadius: '6px',
     cursor: 'pointer',
-    transition: 'background 0.3s ease',
+    transition: 'background-color 0.3s',
+    userSelect: 'none',
   },
   altMethod: {
-    backgroundColor: '#fff',
-    padding: '2rem',
-    borderRadius: '12px',
-    boxShadow: '0 2px 12px rgba(0, 0, 0, 0.08)',
     textAlign: 'center',
   },
   successContainer: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    minHeight: '60vh',
+    minHeight: '300px',
     padding: '2rem',
   },
   successCard: {
-    backgroundColor: '#ffffff',
-    padding: '3rem',
-    borderRadius: '14px',
-    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.12)',
+    border: '2px solid #6c0909',
+    padding: '2rem',
+    borderRadius: '10px',
     textAlign: 'center',
-    maxWidth: '500px',
+    maxWidth: '400px',
+    backgroundColor: '#fff',
   },
   successTitle: {
-    color: '#880E4F',
-    fontSize: '2rem',
-    fontWeight: '700',
+    color: '#6c0909',
     marginBottom: '1rem',
   },
   successText: {
-    color: '#444',
-    fontSize: '1.05rem',
-    marginBottom: '0.75rem',
+    marginBottom: '0.5rem',
   },
   successAmount: {
-    fontSize: '1.4rem',
     fontWeight: '700',
-    margin: '1.5rem 0',
-    color: '#000',
+    fontSize: '1.2rem',
+    marginBottom: '1.5rem',
   },
   continueShopping: {
     padding: '0.75rem 1.5rem',
-    backgroundColor: '#2810c4',
+    backgroundColor: '#6c0909',
     color: '#fff',
-    border: 'none',
-    borderRadius: '8px',
+    fontWeight: '700',
     fontSize: '1rem',
-    fontWeight: '600',
+    border: 'none',
+    borderRadius: '6px',
     cursor: 'pointer',
-    transition: '0.3s ease',
-  },
+    userSelect: 'none',
+  }
 };
-
-
 
 export default Payment;

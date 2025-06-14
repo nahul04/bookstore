@@ -38,8 +38,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/payment" element={<Payment />} />
-          <Route path="/admin/add-book" element={<AddBook />} />
-          <Route path="/admin/edit-book/:id" element={<EditBook />} />
+          
 
 
           {/* Admin routes */}
@@ -53,9 +52,13 @@ function App() {
               )
             }
           />
-          <Route path="/admin/books" element={<ManageBooks />} />
-          <Route path="/admin/users" element={<ManageUsers />} />
-          <Route path="/admin/orders" element={<ViewOrders />} />
+         <Route path="/admin/dashboard" element={<AdminDashboard />} />
+         <Route path="/admin/add-book" element={<AddBook />} />
+         <Route path="/admin/manage-books" element={<ManageBooks />} />
+         <Route path="/admin/manage-users" element={<ManageUsers />} />
+         <Route path="/admin/view-orders" element={<ViewOrders />} />
+         <Route path="/admin" element={<AdminLogin />} />
+
         </Routes>
       </Router>
     </CartProvider>
