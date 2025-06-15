@@ -26,8 +26,10 @@ function Login() {
 
       if (response.ok) {
         localStorage.setItem('user', JSON.stringify(data.user));
-        // Optionally store a token if you implement JWT/session
-        if (data.user.role === 'admin') {
+        // Admin email check
+        if (data.user.email === 'admin@bookstore.com') {
+          navigate('/admin/dashboard');
+        } else if (data.user.role === 'admin') {
           navigate('/admin');
         } else {
           navigate('/');
