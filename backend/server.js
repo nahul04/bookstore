@@ -41,10 +41,10 @@ app.get('/books', (req, res) => {
 
 // Add new book
 app.post('/books', (req, res) => {
-  const { title, author, price, image } = req.body;
+  const { title, author, price, category, image } = req.body;
   db.query(
-    'INSERT INTO books (title, author, price, image) VALUES (?, ?, ?, ?)',
-    [title, author, price, image],
+    'INSERT INTO books (title, author, price, category, image) VALUES (?, ?, ?, ?, ?)',
+    [title, author, price, category, image],
     (err, result) => {
       if (err) {
         console.error('Error adding book:', err.message);
