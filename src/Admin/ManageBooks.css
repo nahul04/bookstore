@@ -1,58 +1,56 @@
-.manage-books {
-  padding: 40px;
-  background-color: #f9f9f9;
-  min-height: 100vh;
+.books-container {
+  padding: 20px;
+}
+
+.books-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.add-book-btn {
+  background-color: #7428a7;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  margin-bottom: 20px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.books-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.books-table th,
+.books-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
   text-align: center;
 }
 
-.book-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
+.books-table th {
+  background-color: #f4f4f4;
 }
 
-.book-card {
-  background-color: white;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 0 8px rgba(0,0,0,0.1);
-  width: 240px;
+.books-table img {
+  border-radius: 4px;
 }
 
-.book-card img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 8px;
-}
-
-.book-card h3 {
-  margin: 10px 0 5px;
-}
-
-.book-card p {
-  margin: 4px 0;
-  font-size: 14px;
-  color: #444;
-}
-
-.book-actions {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-}
-
-.book-actions button {
-  padding: 8px 12px;
-  font-size: 14px;
+.books-table button {
+  padding: 5px 10px;
+  margin: 2px;
   border: none;
-  border-radius: 6px;
+  border-radius: 4px;
   cursor: pointer;
-  background-color: #007bff;
+}
+
+.books-table button:first-child {
+  background-color: #56086e;
   color: white;
 }
 
-.delete-btn {
-  background-color: #e65160 ,#810814 ;
+.books-table button:last-child {
+  background-color: #890482;
+  color: white;
 }

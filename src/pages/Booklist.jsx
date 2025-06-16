@@ -1,10 +1,10 @@
+// src/components/BookList.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BookCard from '../components/BookCard';
 import './BookList.css';
 
-
-// Category-specific styling
+// Category styling function
 const getCategoryStyle = (categoryName) => {
   const styles = {
     Fantasy: {
@@ -46,6 +46,7 @@ const BookList = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const navigate = useNavigate();
 
+  // Fetch book data from backend
   useEffect(() => {
     fetch('http://localhost:5000/books')
       .then((response) => response.json())
@@ -53,7 +54,7 @@ const BookList = () => {
       .catch((error) => console.error('Error fetching books:', error));
   }, []);
 
-  // Handle view details
+  // Navigate to book details page
   const handleViewDetails = (id) => {
     navigate(`/book/${id}`);
   };
@@ -69,6 +70,7 @@ const BookList = () => {
 
   const categories = ['All', ...Object.keys(groupedBooks).sort()];
 
+  // Filtered categories
   const filteredCategories =
     selectedCategory === 'All'
       ? Object.entries(groupedBooks)
@@ -78,7 +80,7 @@ const BookList = () => {
     <div className="booklist-container">
       <h2 className="booklist-title">Book Categories</h2>
 
-      {/* Category Filter */}
+      {/* Category Filter Dropdown */}
       <div className="filter-container">
         <label htmlFor="categoryFilter">Filter by Category: </label>
         <select
@@ -94,7 +96,7 @@ const BookList = () => {
         </select>
       </div>
 
-      {/* Book List Display */}
+      {/* Book Sections by Category */}
       {filteredCategories.map(([categoryName, booksInCategory], index) => {
         const style = getCategoryStyle(categoryName);
 
@@ -105,13 +107,17 @@ const BookList = () => {
             style={{
               backgroundColor: style.bgColor,
               borderColor: style.borderColor,
+              padding: '20px',
+              borderRadius: '10px',
+              marginBottom: '20px'
             }}
           >
             <h3
               className="category-title"
               style={{
                 color: style.textColor,
-                borderLeftColor: style.textColor,
+                borderBottom: `2px solid ${style.textColor}`,
+                paddingBottom: '10px'
               }}
             >
               {categoryName}

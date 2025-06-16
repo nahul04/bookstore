@@ -1,59 +1,53 @@
-.add-book-container {
-  min-height: 100vh;
-  background: linear-gradient(to right, #f0f4ff, #ffe9f0);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 60px;
+.add-book-form {
+  max-width: 480px;
+  margin: 50px auto;
+  padding: 25px 30px;
+  border: 1.5px solid #ccc;
+  border-radius: 12px;
+  background-color: #fff9fc;
+  box-shadow: 0 4px 8px rgba(132, 8, 124, 0.15);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.add-book-container h2 {
-  font-size: 32px;
-  color: #2c3e50;
-  margin-bottom: 30px;
-  font-weight: bold;
+.add-book-form h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #84087c;
+  font-weight: 700;
+  letter-spacing: 1px;
 }
 
-.add-book-form {
-  background-color: #ffffff;
-  padding: 35px;
-  width: 400px;
-  border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+.add-book-form form {
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  border: 1px solid #e0e0e0;
 }
 
 .add-book-form input {
-  padding: 12px;
-  font-size: 15px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  transition: border-color 0.3s, background-color 0.3s;
+  margin-bottom: 18px;
+  padding: 12px 14px;
+  font-size: 17px;
+  border: 1.5px solid #ccc;
+  border-radius: 6px;
+  transition: border-color 0.3s ease;
 }
 
 .add-book-form input:focus {
-  border-color: #007bff;
-  background-color: #f0f8ff;
+  border-color: #84087c;
   outline: none;
+  box-shadow: 0 0 5px rgba(132, 8, 124, 0.4);
 }
 
 .add-book-form button {
-  padding: 14px;
-  background: linear-gradient(to right, #28a745, #43c767);
-  color: white;
-  font-size: 16px;
-  font-weight: 600;
+  padding: 12px 0;
+  background-color: #84087c;
+  color: #fff;
+  font-weight: 700;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: transform 0.2s, background-color 0.3s;
+  transition: background-color 0.3s ease;
 }
 
 .add-book-form button:hover {
-  background: linear-gradient(to right, #218838, #38b750);
-  transform: scale(1.03);
+  background-color: #6a0663;
 }
