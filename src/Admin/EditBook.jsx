@@ -1,36 +1,57 @@
 // src/admin/EditBook.jsx
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import AdminNavbar from './AdminNavbar';
+import './EditBook.css';
 
 const EditBook = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+
   const [book, setBook] = useState({
-    title: 'Sample Title',
-    author: 'Sample Author',
-    price: 100,
-    category: 'Fiction',
-    image: 'url'
+    title: '',
+    author: '',
+    price: '',
+    category: '',
+    image: ''
   });
 
-  const handleUpdate = (e) => {
+  useEffect(() => {
+    // Fetch book by ID here (API)
+    setBook({
+      title: 'Sample Book',
+      author: 'Sample Author',
+      price: '200',
+      category: 'Cartoon',
+      image: 'https://via.placeholder.com/80'
+    });
+  }, [id]);
+
+  const handleChange = (e) => {
+    setBook({ ...book, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Updated Book:", book);
-    alert('Book updated!');
+    console.log('Updated Book:', book);
+    alert("Book updated!");
+    navigate('/admin/manage-books');
   };
 
   return (
     <div>
       <AdminNavbar />
-      <h2>Edit Book {id}</h2>
-      <form onSubmit={handleUpdate}>
-        <input type="text" value={book.title} onChange={e => setBook({...book, title: e.target.value})} required />
-        <input type="text" value={book.author} onChange={e => setBook({...book, author: e.target.value})} required />
-        <input type="number" value={book.price} onChange={e => setBook({...book, price: e.target.value})} required />
-        <input type="text" value={book.category} onChange={e => setBook({...book, category: e.target.value})} required />
-        <input type="text" value={book.image} onChange={e => setBook({...book, image: e.target.value})} required />
-        <button type="submit">Update Book</button>
-      </form>
+      <div className="edit-book-form">
+        <h2>Edit Book</h2>
+        <form onSubmit={handleSubmit}>
+          <input name="title" value={book.title} onChange={handleChange} required />
+          <input name="author" value={book.author} onChange={handleChange} required />
+          <input name="price" type="number" value={book.price} onChange={handleChange} required />
+          <input name="category" value={book.category} onChange={handleChange} required />
+          <input name="image" value={book.image} onChange={handleChange} required />
+          <button type="submit">Update Book</button>
+        </form>
+      </div>
     </div>
   );
 };

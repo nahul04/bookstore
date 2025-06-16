@@ -1,6 +1,6 @@
 import React from 'react';
 import AdminNavbar from './AdminNavbar';
-import './ViewOrders.css'; // Optional: Add styling
+import './ViewOrders.css'; 
 
 const ViewOrders = () => {
   const orders = [

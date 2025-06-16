@@ -2,6 +2,9 @@
 import React, { useState } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Checkout from "./pages/Checkout";
+import PaymentSuccess from "./pages/PaymentSuccess";
+import PaymentCancel from "./pages/PaymentCancel";
 
 import Navbar from './components/Navbar';
 import Login from './pages/login';
@@ -10,8 +13,8 @@ import Aboutus from './pages/AboutUs';
 import BookList from './pages/Booklist';
 import Cart from './pages/Cart';
 import Register from './pages/Register';
-import Payment from './pages/payment';
 import { CartProvider } from './context/CartContext';
+import BookDetails from './components/BookDetails';
 
 // Admin Components
 import AdminDashboard from './Admin/AdminDashboard';
@@ -37,8 +40,10 @@ function App() {
           <Route path="/Aboutus" element={<Aboutus />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/payment" element={<Payment />} />
-          
+          <Route path="/book/:id" element={<BookDetails />} />
+         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/payment-success" element={<PaymentSuccess />} />
+        <Route path="/payment-cancel" element={<PaymentCancel />} />
 
 
           {/* Admin routes */}

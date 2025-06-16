@@ -1,6 +1,7 @@
 // src/admin/ManageUsers.jsx
 import React, { useState } from 'react';
 import AdminNavbar from './AdminNavbar';
+import './ManageUser.css';
 
 const ManageUsers = () => {
   // Use state so you can add delete/edit functionality later
