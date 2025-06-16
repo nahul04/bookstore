@@ -35,7 +35,7 @@ const AddBook = () => {
           <input name="author" placeholder="Author" onChange={handleChange} required />
           <input name="price" type="number" placeholder="Price" onChange={handleChange} required />
           <input name="category" placeholder="Category" onChange={handleChange} required />
-          <input name="image" placeholder="Image URL" onChange={handleChange} required />
+          <input name="image" placeholder="Image " onChange={handleChange} required />
           <button type="submit">Add Book</button>
         </form>
       </div>
