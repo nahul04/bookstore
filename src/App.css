@@ -40,4 +40,9 @@
 .read-the-docs {
   color: #888;
 }
- 
+ body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: url('/images/book-bg.jpg') no-repeat center center fixed;
+  background-size: cover;
+}

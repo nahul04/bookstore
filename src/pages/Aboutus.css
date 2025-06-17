@@ -1,60 +1,65 @@
 .about-container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 40px 20px;
+  max-width: 960px;
+  margin: 40px auto;
+  padding: 50px 30px;
   font-family: 'Segoe UI', sans-serif;
-  color: #b52323;
-  background-color: #f9f9f9;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  color: #333;
+  background: linear-gradient(to right, #fdfbfb, #ebedee);
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
 }
 
 .about-hero {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 50px;
 }
 
 .about-hero h1 {
-  font-size: 40px;
-  color: #9505b9;
-  margin-bottom: 10px;
+  font-size: 42px;
+  color: #6a0dad;
+  margin-bottom: 12px;
+  font-weight: 800;
 }
 
 .about-hero p {
-  font-size: 18px;
-  color: #b40482;
+  font-size: 20px;
+  color: #d63384;
+  font-weight: 500;
 }
 
 .about-section {
   margin-bottom: 30px;
-  padding: 20px;
-  background-color: #ffffff;
-  border-left: 5px solid #6004b5;
-  border-radius: 8px;
-  transition: box-shadow 0.3s ease;
+  padding: 25px 30px;
+  background-color: #fff;
+  border-left: 6px solid #6a0dad;
+  border-radius: 12px;
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
 }
 
 .about-section:hover {
-  box-shadow: 0 4px 10px rgba(6, 124, 134, 0.15);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px);
 }
 
 .about-section h2 {
-  font-size: 22px;
-  color:  #9505b9;
-  margin-bottom: 10px;
+  font-size: 24px;
+  color: #6a0dad;
+  margin-bottom: 12px;
+  font-weight: 700;
 }
 
 .about-section p,
 .about-section ul {
-  font-size: 16px;
-  color: #0594ec;
-  line-height: 1.6;
+  font-size: 17px;
+  color: #444;
+  line-height: 1.7;
 }
 
 .about-section ul {
-  padding-left: 20px;
+  padding-left: 25px;
+  list-style-type: disc;
 }
 
 .about-section li {
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }

@@ -18,7 +18,6 @@ import Moon from '../assets/Moon.jfif';
 import Charming from "../assets/charming.png";
 import How from"../assets/How.webp";
 
-
 const featuredBooks = [
   { title: 'Harry Potter', image: harry },
   { title: 'Autumn Leaves', image: autumn },
@@ -28,8 +27,8 @@ const featuredBooks = [
   { title: 'Inside the Mind', image: inside },
   { title: 'Gilded', image: gilded },
   { title: 'Moon', image: Moon },
-  {title: 'charming',image: Charming },
-  {title:'How',image:How}
+  { title: 'Charming', image: Charming },
+  { title: 'How', image: How }
 ];
 
 const Home = () => {
@@ -50,13 +49,17 @@ const Home = () => {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
+        minHeight: '100vh',
+        paddingBottom: '3rem'
       }}
     >
-      <header>
-        <h1 className="home-title">Welcome to the Online Bookstore</h1>
-        <p className="home-subtitle">A World of Books at Your Fingertips</p>
+      <header className="home-header">
+        <h1 className="home-title">
+          Welcome to the <span className="highlight">Online</span> Bookstore
+        </h1>
+        <p className="home-subtitle">A WORLD OF BOOKS AT YOUR FINGERTIPS</p>
         <p className="home-tagline">
-          Shop the Best Reads Online – Fast, Easy & Affordable!
+          Shop the Best Reads Online – <em>Fast, Easy & Affordable!</em>
         </p>
       </header>
 
@@ -93,8 +96,9 @@ const Home = () => {
             </SwiperSlide>
           ))}
         </Swiper>
-        <Footer />
       </section>
+
+      <Footer />
     </div>
   );
 };
