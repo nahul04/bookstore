@@ -8,35 +8,46 @@ import './BookList.css';
 const getCategoryStyle = (categoryName) => {
   const styles = {
     Fantasy: {
-      bgColor: 'rgb(12, 3, 50)',
-      textColor: '#075985',
-      borderColor: '#bae6fd',
+      bgColor: 'rgb(17, 1, 88)',
+      textColor: 'rgb(31, 3, 110)',
+      borderColor:  'rgb(23, 84, 117)',
     },
     Fiction: {
-      bgColor: 'rgb(129, 62, 222)',
-      textColor: '#4b0082',
-      borderColor: '#d9c7ff',
-    },
-    'Self-Help': {
-      bgColor: 'rgb(17, 139, 215)',
-      textColor: '#065f46',
-      borderColor: '#a7f3d0',
+      bgColor: 'rgb(25, 3, 55)',
+      textColor: 'rgb(71, 6, 117)',
+      borderColor: 'rgb(112, 6, 110)',
     },
     Horror: {
       bgColor: 'rgb(58, 16, 244)',
-      textColor: '#075985',
-      borderColor: '#bae6fd',
+      textColor: 'rgb(4, 9, 91)',
+      borderColor: 'rgb(130, 6, 113)',
     },
     Fashion: {
       bgColor: 'rgb(67, 194, 44)',
-      textColor: '#065f46',
-      borderColor: '#a7f3d0',
+      textColor: 'rgb(3, 52, 38)',
+      borderColor: 'rgb(111, 120, 5)',
     },
+    Cartoon:{
+      bgColor: 'rgb(7, 128, 156)',
+      textColor: 'rgb(46, 10, 108)',
+      borderColor: '#a7f3d0',
+
+    },
+    novels:{
+      bgColor:'rgb(143, 54, 6)',
+      textColor: 'rgb(6, 51, 37)',
+      borderColor: 'rgb(4, 82, 8)0',
+    },
+    Selfhelp:{
+      bgColor: 'rgb(220, 118, 198)',
+      textColor: 'rgb(30, 6, 95)',
+      borderColor: '    #a7f3d0',
+    }
   };
 
   return styles[categoryName] || {
-    bgColor: 'rgb(199, 199, 199)',
-    textColor: '#333',
+    bgColor: 'rgb(129, 16, 16)',
+    textColor: ' #333',
     borderColor: '#ddd',
   };
 };

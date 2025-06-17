@@ -14,12 +14,12 @@ const Footer = () => {
         <div className="footer-column">
           <h4>Categories</h4>
           <ul>
-            <li>School List</li>
-            <li>Children</li>
-            <li>Galle Literary</li>
-            <li>Gift Packs</li>
-            <li>By Language</li>
-            <li>Promotions</li>
+            <li>Fichion</li>
+            <li>Fantasy</li>
+            <li>Novels</li>
+            <li>Fashion</li>
+            <li>Story</li>
+            <li>Horror</li>
           </ul>
         </div>
 
@@ -29,7 +29,8 @@ const Footer = () => {
           <ul>
             <li>Home</li>
             <li>About Us</li>
-            <li>Contact Us</li>
+            <li>Category</li>
+            <li>Cart</li>
             <li>Login</li>
           </ul>
         </div>

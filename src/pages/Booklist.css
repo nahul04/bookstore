@@ -24,7 +24,7 @@
   margin-bottom: 3rem;
   padding: 2rem;
   border-radius: 16px;
-  background: linear-gradient(120deg, #ffffff, #f9f9fb);
+  background: linear-gradient(120deg, #f5f3f3, #f9f9fb);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.07);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -40,8 +40,8 @@
   text-align: left;
   padding-left: 1rem;
   font-weight: 600;
-  border-left: 6px solid #8b5cf6;
-  background: linear-gradient(to right, #8b5cf6, #ec4899);
+  border-left: 6px solid #2f1668;
+  background: linear-gradient(to right, #381f72, #ec4899);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -56,27 +56,31 @@
 
 /* Category-specific themes */
 .category-fantasy {
-  background: linear-gradient(to right, #e2d007, #ffc8dd);
-  border-left: 6px solid #f6a40c;
+  background: linear-gradient(to right, #a1f4c0, #b2f946);
+  border-left: 6px solid #ce8d09;
 }
 
 .category-fiction {
-  background: linear-gradient(to right, #41dd9f, #7ad28d);
-  border-left: 6px solid #80f979;
+  background: linear-gradient(to right, #f7d850, #eaf8b6);
+  border-left: 6px solid #074204;
 }
 
 .category-self-help {
-  background: linear-gradient(to right, #f83f71, #ea81aa);
+  background: linear-gradient(to right, #e86185, #ea81aa);
   border-left: 6px solid #fd4893;
 }
 
 .category-horror {
-  background: linear-gradient(to right, #c407a8, #08efef);
+  background: linear-gradient(to right, #ef65da, #a6f0f0);
   border-left: 6px solid #f50ffd;
 }
 .category-fashion {
-  background: linear-gradient(to right, #74a5ef, #11b4b4);
-  border-left: 6px solid #407bab;
+  background: linear-gradient(to right, #edf7a1, #ddbf7a);
+  border-left: 6px solid #a03804;
+}
+.category-novels {
+  background: linear-gradient(to right, #80d48c, #6fd36b);
+  border-left: 6px solid #300cb3;
 }
 
 /* Filter Dropdown Styling */
@@ -86,7 +90,7 @@
   align-items: center;
   gap: 15px;
   font-size: larger;
-  color: #0805b0;
+  color: #01011e;
   flex-wrap: wrap;
   justify-content: left;
 }
@@ -97,12 +101,12 @@
   border: 2px solid #ccc;
   background: #f6f3f3;
   font-size: 1rem;
-  color: #5c63e4;
+  color: #0a12a5;
   box-shadow: 0 8px 60px rgba(29, 44, 218, 0.05);
   transition: border-color 0.3s ease;
 }
 
 .filter-container select:focus {
   outline: none;
-  border-color: #110320;
+  border-color: #7c20dd;
 }

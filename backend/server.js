@@ -67,7 +67,7 @@ app.delete('/books/:id', (req, res) => {
   });
 });
 
-// --- CART ENDPOINTS ---
+
 
 // Get cart items for a user
 app.get('/cart', (req, res) => {
