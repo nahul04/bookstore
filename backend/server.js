@@ -28,6 +28,9 @@ app.get('/', (req, res) => {
   res.send('Welcome to the Bookstore API');
 });
 
+
+
+
 // Get all books
 app.get('/books', (req, res) => {
   db.query('SELECT * FROM books', (err, results) => {
