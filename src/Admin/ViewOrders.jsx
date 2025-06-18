@@ -1,24 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import AdminNavbar from './AdminNavbar';
-import './ViewOrders.css'; 
+import './ViewOrders.css';
+import axios from 'axios';
 
 const ViewOrders = () => {
-  const orders = [
-    {
-      id: 1,
-      user: 'User A',
-      total: 250,
-      date: '2025-06-10',
-      status: 'Delivered'
-    },
-    {
-      id: 2,
-      user: 'User B',
-      total: 300,
-      date: '2025-06-11',
-      status: 'Processing'
-    }
-  ];
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    axios.get('http://localhost:5000/api/orders')
+      .then(res => setOrders(res.data))
+      .catch(err => console.error("Error fetching orders:", err));
+  }, []);
 
   return (
     <div>
@@ -40,7 +32,7 @@ const ViewOrders = () => {
               <tr key={order.id}>
                 <td>{order.id}</td>
                 <td>{order.user}</td>
-                <td>{order.date}</td>
+                <td>{new Date(order.date).toLocaleDateString()}</td>
                 <td>{order.total}</td>
                 <td>{order.status}</td>
               </tr>

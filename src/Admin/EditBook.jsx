@@ -19,11 +19,11 @@ const EditBook = () => {
   useEffect(() => {
     // Fetch book by ID here (API)
     setBook({
-      title: 'Sample Book',
-      author: 'Sample Author',
-      price: '200',
-      category: 'Cartoon',
-      image: 'https://via.placeholder.com/80'
+      title: 'Book',
+      author: 'Author',
+      price: 'price',
+      category: 'Category',
+      imageURL: ' URL'
     });
   }, [id]);
 
