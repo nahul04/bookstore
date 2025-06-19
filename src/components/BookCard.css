@@ -41,17 +41,17 @@
 }
 
 .view-details-button {
-  background-color: #007bff;
+  background-color: #9a0758;
   color: white;
 }
 
 .view-details-button:hover {
-  background-color: #0056b3;
+  background-color: #d62698;
 }
 
 .add-cart-button {
-  background-color: #28a745;
-  color: white;
+  background-color: #54036c;
+  color: rgb(162, 40, 40);
 }
 
 .add-cart-button:hover {

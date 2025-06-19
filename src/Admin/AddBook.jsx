@@ -1,4 +1,4 @@
-// src/admin/AddBook.jsx
+
 import React, { useState } from 'react';
 import AdminNavbar from './AdminNavbar';
 import './AddBook.css';

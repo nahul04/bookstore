@@ -1,41 +1,58 @@
-.book-details {
-  max-width: 800px;
+.book-details-container {
+  max-width: 1000px;
   margin: 50px auto;
   padding: 30px;
-  border: 2px solid #c7d2fe;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
   border-radius: 12px;
-  background: linear-gradient(135deg, #f0f4ff, #ffffff);
-  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.15);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+  transition: all 0.3s ease;
+}
+
+.book-details-container:hover {
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+}
+
+.book-details-image {
+  width: 240px;
+  height: 350px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+.book-details-info {
+  flex: 1;
+  min-width: 280px;
+}
+
+.book-details-info h2 {
+  font-size: 28px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.book-details-info p {
+  font-size: 16px;
+  margin: 6px 0;
+  color: #444;
+}
+
+.book-details-description {
+  margin-top: 15px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: #555;
+  white-space: pre-wrap;
+}
+
+.book-loading,
+.book-error {
   text-align: center;
-  transition: transform 0.3s ease;
-}
-
-.book-details:hover {
-  transform: scale(1.01);
-}
-
-.book-details img {
-  width: 270px;
-  height: auto;
-  border-radius: 12px;
-  margin-bottom: 25px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-}
-
-.book-details h2 {
-  font-size: 30px;
-  color: #3b0764;
-  margin-bottom: 12px;
-  font-weight: 700;
-}
-
-.book-details p {
   font-size: 18px;
-  margin: 12px 0;
-  color: #4b5563;
-  line-height: 1.6;
-}
-
-.book-details p strong {
-  color: #0c4a6e;
+  margin-top: 50px;
+  color: #777;
 }

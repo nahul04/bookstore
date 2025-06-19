@@ -1,40 +1,47 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import AdminNavbar from './AdminNavbar';
 import './ViewOrders.css';
-import axios from 'axios';
 
 const ViewOrders = () => {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/orders')
-      .then(res => setOrders(res.data))
-      .catch(err => console.error("Error fetching orders:", err));
+    fetchOrders();
   }, []);
+
+  const fetchOrders = async () => {
+    try {
+      const res = await axios.get('http://localhost:5000/api/orders');
+      setOrders(res.data);
+    } catch (err) {
+      console.error('Error fetching orders:', err);
+    }
+  };
 
   return (
     <div>
       <AdminNavbar />
-      <div className="orders-container">
+      <div className="view-orders-container">
         <h2>Customer Orders</h2>
         <table className="orders-table">
           <thead>
             <tr>
               <th>Order ID</th>
-              <th>User</th>
-              <th>Date</th>
-              <th>Total (Rs.)</th>
-              <th>Status</th>
+              <th>Customer Name</th>
+              <th>Book Title</th>
+              <th>Quantity</th>
+              <th>Total Price</th>
             </tr>
           </thead>
           <tbody>
             {orders.map(order => (
-              <tr key={order.id}>
-                <td>{order.id}</td>
-                <td>{order.user}</td>
-                <td>{new Date(order.date).toLocaleDateString()}</td>
-                <td>{order.total}</td>
-                <td>{order.status}</td>
+              <tr key={order.order_id}>
+                <td>{order.order_id}</td>
+                <td>{order.customer_name}</td>
+                <td>{order.book_title}</td>
+                <td>{order.quantity}</td>
+                <td>Rs. {order.total_price}</td>
               </tr>
             ))}
           </tbody>

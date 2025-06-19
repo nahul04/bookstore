@@ -12,7 +12,7 @@ import Cart from './pages/Cart';
 import Register from './pages/Register';
 import Payment from './pages/payment';
 import { CartProvider } from './context/CartContext';
-import BookDetails from './components/BookDetails';
+
 
 // Admin Components
 import AdminDashboard from './Admin/AdminDashboard';
@@ -22,6 +22,7 @@ import ManageBooks from './Admin/ManageBooks';
 import ViewOrders from './Admin/ViewOrders'; 
 import AddBook from './Admin/AddBook';
 import EditBook from './Admin/EditBook';
+import BookDetails from './components/BookDetails';
 
 function App() {
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
@@ -61,6 +62,7 @@ function App() {
          <Route path="/admin/view-orders" element={<ViewOrders />} />
          <Route path="/admin" element={<AdminLogin />} />
          <Route path="/admin/edit-book/:id" element={<EditBook />} />
+         <Route path="/book/:id" element={<BookDetails />} />
 
 
         </Routes>

@@ -32,7 +32,7 @@ const ManageBooks = () => {
       <div className="books-container">
         <div className="books-header">
           <h2>Manage Books</h2>
-          <button onClick={handleAddBook} className="add-book-btn">+ Add Book</button>
+          <button onClick={handleAddBook} className="add-book-btn">Add Book</button>
         </div>
         <div className="table-responsive">
           <table className="books-table">
