@@ -88,7 +88,16 @@ const BookList = () => {
       : [[selectedCategory, groupedBooks[selectedCategory] || []]];
 
   return (
-    <div className="booklist-container">
+    <div
+      className="booklist-container"
+      style={{
+        minHeight: '100vh',
+        width: '100vw',
+        boxSizing: 'border-box',
+        background: '#f8f8fc',
+        overflowX: 'hidden'
+      }}
+    >
       <h2 className="booklist-title">Book Categories</h2>
 
       {/* Category Filter Dropdown */}

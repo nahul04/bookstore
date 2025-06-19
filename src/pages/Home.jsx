@@ -45,12 +45,17 @@ const Home = () => {
     <div
       className="home-container"
       style={{
+        minHeight: '100vh',
+        width: '100vw',
+        boxSizing: 'border-box',
+        display: 'flex',
+        flexDirection: 'column',
         backgroundImage: `linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.95)), url(${background})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        minHeight: '100vh',
-        paddingBottom: '3rem'
+        paddingBottom: '0',
+        overflowX: 'hidden'
       }}
     >
       <header className="home-header">
@@ -63,7 +68,7 @@ const Home = () => {
         </p>
       </header>
 
-      <section className="featured-section">
+      <section className="featured-section" style={{ flex: 1 }}>
         <p className="featured-arrival">Explore Our Featured Arrivals</p>
         <h2 className="featured-heading">Featured Books</h2>
 

@@ -106,7 +106,7 @@ const Cart = () => {
 const styles = {
   container: {
     padding: '2rem',
-    maxWidth: '900px',
+
     margin: '0 auto',
     fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
     color: '#333'
