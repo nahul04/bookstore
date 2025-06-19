@@ -17,62 +17,65 @@ const db = mysql.createConnection({
 db.connect((err) => {
   if (err) {
     console.error('Database connection failed:', err.message);
-    
     return;
   }
   console.log('From backend side - Database connected successfully');
 });
 
-// Root route (optional)
+// --- ROUTES START ---
+
+// Root route
 app.get('/', (req, res) => {
   res.send('Welcome to the Bookstore API');
 });
 
-
-
-
-// Get all books
+// BOOK ROUTES
 app.get('/books', (req, res) => {
   db.query('SELECT * FROM books', (err, results) => {
-    if (err) {
-      console.error('Error fetching books:', err.message);
-      return res.status(500).json({ error: 'Failed to fetch books' });
-    }
+    if (err) return res.status(500).json({ error: 'Failed to fetch books' });
     res.json(results);
   });
 });
 
-// Add new book
 app.post('/books', (req, res) => {
   const { title, author, price, category, image } = req.body;
   db.query(
     'INSERT INTO books (title, author, price, category, image) VALUES (?, ?, ?, ?, ?)',
     [title, author, price, category, image],
     (err, result) => {
-      if (err) {
-        console.error('Error adding book:', err.message);
-        return res.status(500).json({ error: 'Failed to add book' });
-      }
+      if (err) return res.status(500).json({ error: 'Failed to add book' });
       res.json({ message: 'Book added', id: result.insertId });
     }
   );
 });
 
-// Delete a book
+app.get('/books/:id', (req, res) => {
+  const { id } = req.params;
+  db.query("SELECT * FROM books WHERE id = ?", [id], (err, result) => {
+    if (err) return res.status(500).json(err);
+    res.json(result[0]);
+  });
+});
+
+app.put('/books/:id', (req, res) => {
+  const { id } = req.params;
+  const { title, author, price, category, image } = req.body;
+  const sql = "UPDATE books SET title=?, author=?, price=?, category=?, image=? WHERE id=?";
+  db.query(sql, [title, author, price, category, image, id], (err, result) => {
+    if (err) return res.status(500).json(err);
+    res.json({ message: "Book updated successfully" });
+  });
+});
+
 app.delete('/books/:id', (req, res) => {
   const bookId = req.params.id;
   db.query('DELETE FROM books WHERE id = ?', [bookId], (err) => {
-    if (err) {
-      console.error('Error deleting book:', err.message);
-      return res.status(500).json({ error: 'Failed to delete book' });
-    }
+    if (err) return res.status(500).json({ error: 'Failed to delete book' });
     res.json({ message: 'Book deleted' });
   });
 });
 
-
-
-// Get cart items for a user
+// CART ROUTES
 app.get('/cart', (req, res) => {
   const userId = parseInt(req.query.user_id, 10);
   if (!userId) return res.status(400).json({ error: 'user_id required' });
@@ -83,16 +86,12 @@ app.get('/cart', (req, res) => {
     WHERE c.user_id = ?
   `;
   db.query(sql, [userId], (err, results) => {
-    if (err) {
-      console.error('Error fetching cart:', err.message);
-      return res.status(500).json({ error: 'Failed to fetch cart' });
-    }
+    if (err) return res.status(500).json({ error: 'Failed to fetch cart' });
     const total = results.reduce((sum, item) => sum + item.price * item.quantity, 0);
     res.json({ items: results, total });
   });
 });
 
-// Add book to cart (increments quantity if exists)
 app.post('/cart', (req, res) => {
   const { user_id, book_id } = req.body;
   if (!user_id || !book_id) return res.status(400).json({ error: 'user_id and book_id required' });
@@ -125,7 +124,6 @@ app.post('/cart', (req, res) => {
   );
 });
 
-// Remove a book from cart
 app.delete('/cart', (req, res) => {
   const { user_id, book_id } = req.body;
   if (!user_id || !book_id) return res.status(400).json({ error: 'user_id and book_id required' });
@@ -140,7 +138,6 @@ app.delete('/cart', (req, res) => {
   );
 });
 
-// Clear all items from cart for user
 app.delete('/cart/clear', (req, res) => {
   const { user_id } = req.body;
   if (!user_id) return res.status(400).json({ error: 'user_id required' });
@@ -150,13 +147,12 @@ app.delete('/cart/clear', (req, res) => {
   });
 });
 
-// --- USER REGISTRATION ENDPOINT ---
+// USER AUTH ROUTES
 app.post('/register', (req, res) => {
   const { name, email, password } = req.body;
   if (!name || !email || !password)
     return res.status(400).json({ error: 'All fields are required' });
 
-  // Check if user exists
   db.query(
     'SELECT id FROM users WHERE name = ? OR email = ?',
     [name, email],
@@ -165,7 +161,6 @@ app.post('/register', (req, res) => {
       if (results.length > 0)
         return res.status(409).json({ error: 'User already exists' });
 
-      // Save password directly (no hashing)
       db.query(
         'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
         [name, email, password],
@@ -178,7 +173,6 @@ app.post('/register', (req, res) => {
   );
 });
 
-// --- USER LOGIN ENDPOINT ---
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
   if (!email || !password)
@@ -193,25 +187,73 @@ app.post('/login', (req, res) => {
         return res.status(401).json({ error: 'Incorrect email or password' });
 
       const user = results[0];
-      // Compare plain password (since you store it as plain text)
       if (user.password !== password)
         return res.status(401).json({ error: 'Incorrect email or password' });
 
-      // Remove password before sending user object
       delete user.password;
       res.json({ user });
     }
   );
 });
 
-// Fake payment endpoint (optional, not required for your current flow)
+// Fake payment
 app.post('/payment', (req, res) => {
-  // Simulate payment processing delay
   setTimeout(() => {
     res.json({ success: true, message: 'Payment processed successfully' });
   }, 1000);
 });
 
+// --- ADMIN: Get all orders ---
+app.get('/api/admin/orders', (req, res) => {
+  const sql = `
+    SELECT 
+      orders.id AS order_id,
+      orders.user_id,
+      users.name AS user_name,
+      orders.total_amount,
+      orders.status,
+      orders.created_at,
+      order_items.book_id,
+      books.title AS book_title,
+      order_items.quantity
+    FROM orders
+    JOIN users ON orders.user_id = users.id
+    JOIN order_items ON orders.id = order_items.order_id
+    JOIN books ON order_items.book_id = books.id
+    ORDER BY orders.id DESC
+  `;
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error("Error fetching orders:", err.message);
+      return res.status(500).json({ error: "Failed to fetch orders" });
+    }
+
+    const orders = {};
+    results.forEach(row => {
+      if (!orders[row.order_id]) {
+        orders[row.order_id] = {
+          order_id: row.order_id,
+          user_id: row.user_id,
+          user_name: row.user_name,
+          total_amount: row.total_amount,
+          status: row.status,
+          created_at: row.created_at,
+          items: [],
+        };
+      }
+      orders[row.order_id].items.push({
+        book_id: row.book_id,
+        book_title: row.book_title,
+        quantity: row.quantity,
+      });
+    });
+
+    res.json(Object.values(orders));
+  });
+});
+
+// START SERVER
 app.listen(5000, () => {
   console.log('Backend running on http://localhost:5000');
 });

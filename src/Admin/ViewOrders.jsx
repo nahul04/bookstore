@@ -1,47 +1,51 @@
 import React, { useEffect, useState } from 'react';
-import AdminNavbar from './AdminNavbar';
-import './ViewOrders.css';
-import axios from 'axios';
 
-const ViewOrders = () => {
+function ViewOrders() {
   const [orders, setOrders] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/orders')
-      .then(res => setOrders(res.data))
-      .catch(err => console.error("Error fetching orders:", err));
+    fetch('http://localhost:5000/api/admin/orders')
+      .then(res => {
+        if (!res.ok) {
+          throw new Error('Failed to fetch orders: ' + res.status);
+        }
+        return res.json();
+      })
+      .then(data => {
+        if (Array.isArray(data)) {
+          setOrders(data);
+        } else {
+          setError('Invalid data format received');
+        }
+      })
+      .catch(err => {
+        setError(err.message);
+      });
   }, []);
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  if (!orders.length) {
+    return <div>No orders found.</div>;
+  }
 
   return (
     <div>
-      <AdminNavbar />
-      <div className="orders-container">
-        <h2>Customer Orders</h2>
-        <table className="orders-table">
-          <thead>
-            <tr>
-              <th>Order ID</th>
-              <th>User</th>
-              <th>Date</th>
-              <th>Total (Rs.)</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders.map(order => (
-              <tr key={order.id}>
-                <td>{order.id}</td>
-                <td>{order.user}</td>
-                <td>{new Date(order.date).toLocaleDateString()}</td>
-                <td>{order.total}</td>
-                <td>{order.status}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      {orders.map(order => (
+        <div key={order.id}>
+          {/* display order details */}
+          <p>Order ID: {order.id}</p>
+          <p>Customer: {order.customer_name}</p>
+          <p>Book: {order.book_title}</p>
+          <p>Quantity: {order.quantity}</p>
+          <p>Total: {order.total_price}</p>
+        </div>
+      ))}
     </div>
   );
-};
+}
 
 export default ViewOrders;

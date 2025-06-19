@@ -1,4 +1,4 @@
-// src/admin/ManageBooks.jsx
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import AdminNavbar from './AdminNavbar';
@@ -8,8 +8,8 @@ const ManageBooks = () => {
   const navigate = useNavigate();
 
   const books = [
-    { id: 1, title: 'Book A', author: 'Author A', price: 300, category: 'Story', image: 'https://via.placeholder.com/80' },
-    { id: 2, title: 'Book B', author: 'Author B', price: 400, category: 'Cartoon', image: 'https://via.placeholder.com/80' }
+    { id: 1, title: 'A Court of Thorns and Roses', author: ' Sarah J. Maas', price: 300, category: 'Story', image: 'https://via.placeholder.com/80' },
+    { id: 2, title: 'Throne of Glass', author: 'Sarah J. Maas', price: 400, category: 'Cartoon', image: 'https://via.placeholder.com/80' }
   ];
 
   const handleEdit = (id) => {
@@ -32,7 +32,7 @@ const ManageBooks = () => {
       <div className="books-container">
         <div className="books-header">
           <h2>Manage Books</h2>
-          <button onClick={handleAddBook} className="add-book-btn">+ Add Book</button>
+          <button onClick={handleAddBook} className="add-book-btn"> Add Book</button>
         </div>
         <div className="table-responsive">
           <table className="books-table">
