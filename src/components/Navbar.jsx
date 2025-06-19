@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../assets/logo1.webp';
-import './Navbar.css'; 
+import './Navbar.css';
 
 function Navbar() {
   const navigate = useNavigate();
@@ -24,12 +24,8 @@ function Navbar() {
         <Link to="/aboutus" className="link">AboutUs</Link>
         <Link to="/categories" className="link">Categories</Link>
         <Link to="/cart" className="link">Cart</Link>
-
-        {isUserLoggedIn ? (
-          <button onClick={handleLogout} className="logout-button">Logout</button>
-        ) : (
-          <Link to="/login" className="link">Login</Link>
-        )}
+        <Link to="/login" className="link">Login</Link>
+        <Link to="/logout" className="link">Logout</Link>
       </div>
     </nav>
   );

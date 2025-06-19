@@ -10,6 +10,7 @@ import Aboutus from './pages/AboutUs';
 import BookList from './pages/Booklist';
 import Cart from './pages/Cart';
 import Register from './pages/Register';
+import LogoutButton from "./components/LogoutButton";
 import Payment from './pages/payment';
 import { CartProvider } from './context/CartContext';
 
@@ -66,6 +67,7 @@ function App() {
 
 
         </Routes>
+        
         
       </Router>
     </CartProvider>

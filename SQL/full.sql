@@ -1,8 +1,8 @@
--- Create the bookstore database
+
 CREATE DATABASE IF NOT EXISTS bookstore;
 USE bookstore;
 
--- Create users table
+
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -11,7 +11,7 @@ CREATE TABLE users (
     role ENUM('customer', 'admin') DEFAULT 'customer'
 );
 
--- Create books table
+
 CREATE TABLE books (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE books (
     image VARCHAR(255)
 );
 
--- Create cart table
+
 CREATE TABLE cart (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,

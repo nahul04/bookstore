@@ -68,9 +68,8 @@ const BookCard = ({ id, book, title, image, author, price }) => {
     }
   };
 
-  // Use the image from DB if present, else use the default image from assets
   const bookImage = image && image.trim() !== '' ? image : defaultBookImage;
-    // const bookImage = defaultBookImage;
+  
 
   return (
     <div className="book-card" style={styles.card}>
