@@ -1,207 +1,162 @@
-import React from 'react';
+// src/components/BookList.jsx
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import BookCard from '../components/BookCard';
-import TheHobbit from '../assets/The Hobbit.jpg'; 
-import Orange from '../assets/Orange.png';
-import Sword from '../assets/Sword.jfif'; 
-import Lord from '../assets/Lord.jfif';
-import Sons from '../assets/Sons.webp';
-import Charming from '../assets/charming.png';
-import Mortals from '../assets/Mortals.jfif';
-import Moon from '../assets/Moon.jfif';
-import Womb from '../assets/Womb.webp';
-import Gilded from '../assets/Gilded.jpeg';
-import Home from '../assets/home.jfif';
-import Fire from '../assets/fire.webp';
-import Stand from '../assets/stand.png';
-import Death from '../assets/death.jpg';
-import The from '../assets/The.jfif';
-import Secret from '../assets/secret.jfif';
+import './BookList.css';
 
-//fetch data 
+// Category styling function
+const getCategoryStyle = (categoryName) => {
+  const styles = {
+    Fantasy: {
+      bgColor: 'rgb(17, 1, 88)',
+      textColor: 'rgb(31, 3, 110)',
+      borderColor:  'rgb(23, 84, 117)',
+    },
+    Fiction: {
+      bgColor: 'rgb(25, 3, 55)',
+      textColor: 'rgb(71, 6, 117)',
+      borderColor: 'rgb(112, 6, 110)',
+    },
+    Horror: {
+      bgColor: 'rgb(58, 16, 244)',
+      textColor: 'rgb(4, 9, 91)',
+      borderColor: 'rgb(130, 6, 113)',
+    },
+    Fashion: {
+      bgColor: 'rgb(67, 194, 44)',
+      textColor: 'rgb(3, 52, 38)',
+      borderColor: 'rgb(111, 120, 5)',
+    },
+    Cartoon:{
+      bgColor: 'rgb(7, 128, 156)',
+      textColor: 'rgb(46, 10, 108)',
+      borderColor: '#a7f3d0',
 
-const categories = [
-  {
-    name: 'Fantasy',
-    books: [
-      {
-        title: 'The Hobbit',
-        author: 'J.R.R. Tolkien',
-        image: TheHobbit,
-        price: 500,
-      },
-      {
-        title: 'The Priory of the Orange Tree',
-        author: 'Samantha Shannon',
-        image: Orange,
-        price: 800,
-      },
-      {
-        title: 'The Sword',
-        author: 'Olivia Wilson',
-        image: Sword,
-        price: 400,
-      },
-      {
-        title: 'To Bargain with Mortals',
-        author: 'R.A. Basu',
-        image: Mortals,
-        price: 1000,
-      },
-      {
-        title: 'The Lord of the Kings',
-        author: 'Sarah Geston',
-        image: Lord,
-        price: 900,
-      },
-      {
-        title: 'A Charming Tale',
-        author: 'Kara Dempsey',
-        image: Charming,
-        price: 1000,
-      },
-      {
-        title: 'Sons of the Oak',
-        author: 'Runelords',
-        image: Sons,
-        price: 800,
-      },
-      {
-        title: 'Marked by the Moon',
-        author: 'Helen Scott',
-        image: Moon,
-        price: 700,
-      },
-    ],
-  },
-  {
-    name: 'Novels',
-    books: [
-      {
-        title: 'Home to Harlem',
-        author: 'Claude McKay',
-        image: Home,
-        price: 1200,
-      },
-      {
-        title: 'The Gilded Ones',
-        author: 'Namina Forna',
-        image: Gilded,
-        price: 800,
-      },
-      {
-        title: 'Womb City',
-        author: 'Tlotlo Tsamaase',
-        image: Womb,
-        price: 1000,
-      },
-      {
-        title: 'Wings of Fire',
-        author: 'Escaping Peril',
-        image: Fire,
-        price: 950,
-      },
-      {
-        title: 'The Stand',
-        author: 'Stephen King',
-        image: Stand,
-        price: 1200,
-      },
-      {
-        title: 'Death in Her Hands',
-        author: 'Ottessa Moshfegh',
-        image: Death,
-        price: 1200,
-      },
-    ],
-  },
-  {
-    name: 'Self-Help',
-    books: [
-      {
-        title: 'How to Build Your Self Esteem',
-        author: 'Maya Jones',
-        image: Home,
-        price: 1500,
-      },
-      {
-        title: 'The Field of Freedom',
-        author: 'Jamie Chandler',
-        image: The,
-        price: 1800,
-      },
-      {
-        title: 'The Secret of Leadership',
-        author: 'Prakash Iyer',
-        image: Secret,
-        price: 1400,
-      },
-    ],
-  },
-]
-const BookList = () => {
-  const getCategoryStyle = (categoryName) => {
-    const styles = {
-      Fantasy: {
-        bgColor: '#e6f7ff',
-        textColor: '#075985',
-        borderColor: '#bae6fd'
-      },
-      Novels: {
-        bgColor: '#f5eeff',
-        textColor: '#4b0082',
-        borderColor: '#d9c7ff'
-      },
-      'Self-Help': {
-        bgColor: '#f0fff4',
-        textColor: '#065f46',
-        borderColor: '#a7f3d0'
-      },  
-    };
-    
-    return styles[categoryName] || {
-      bgColor: '#f5f5f5',
-      textColor: '#333',
-      borderColor: '#ddd'
-    };
+    },
+    novels:{
+      bgColor:'rgb(143, 54, 6)',
+      textColor: 'rgb(6, 51, 37)',
+      borderColor: 'rgb(4, 82, 8)0',
+    },
+    Selfhelp:{
+      bgColor: 'rgb(220, 118, 198)',
+      textColor: 'rgb(30, 6, 95)',
+      borderColor: '    #a7f3d0',
+    }
   };
 
-  return (
-    <div style={styles.container}>
-      <h2 style={styles.mainTitle}>Categories</h2>
+  return styles[categoryName] || {
+    bgColor: 'rgb(129, 16, 16)',
+    textColor: ' #333',
+    borderColor: '#ddd',
+  };
+};
 
-      {categories.map((category, catIndex) => {
-        const categoryStyle = getCategoryStyle(category.name);
+const BookList = () => {
+  const [books, setBooks] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const navigate = useNavigate();
+
+  // Fetch book data from backend
+  useEffect(() => {
+    fetch('http://localhost:5000/books')
+      .then((response) => response.json())
+      .then((data) => setBooks(data))
+      .catch((error) => console.error('Error fetching books:', error));
+  }, []);
+
+  // Navigate to book details page
+  const handleViewDetails = (id) => {
+    navigate(`/book/${id}`);
+  };
+
+  // Group books by category
+  const groupedBooks = books.reduce((acc, book) => {
+    const category = book.category?.trim() || 'Others';
+    const formattedCategory = category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
+    if (!acc[formattedCategory]) acc[formattedCategory] = [];
+    acc[formattedCategory].push(book);
+    return acc;
+  }, {});
+
+  const categories = ['All', ...Object.keys(groupedBooks).sort()];
+
+  // Filtered categories
+  const filteredCategories =
+    selectedCategory === 'All'
+      ? Object.entries(groupedBooks)
+      : [[selectedCategory, groupedBooks[selectedCategory] || []]];
+
+  return (
+    <div
+      className="booklist-container"
+      style={{
+        minHeight: '100vh',
+        width: '100vw',
+        boxSizing: 'border-box',
+        background: '#f8f8fc',
+        overflowX: 'hidden'
+      }}
+    >
+      <h2 className="booklist-title">Book Categories</h2>
+
+      {/* Category Filter Dropdown */}
+      <div className="filter-container">
+        <label htmlFor="categoryFilter">Filter by Category: </label>
+        <select
+          id="categoryFilter"
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+        >
+          {categories.map((cat, idx) => (
+            <option key={idx} value={cat}>
+              {cat}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Book Sections by Category */}
+      {filteredCategories.map(([categoryName, booksInCategory], index) => {
+        const style = getCategoryStyle(categoryName);
+
         return (
-          <div 
-            key={catIndex} 
+          <section
+            key={index}
+            className={`category-section category-${categoryName.toLowerCase().replace(/\s/g, '')}`}
             style={{
-              ...styles.categorySection,
-              backgroundColor: categoryStyle.bgColor,
-              padding: '1.5rem',
-              borderRadius: '8px',
-              boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
-              border: `1px solid ${categoryStyle.borderColor}`
+              backgroundColor: style.bgColor,
+              borderColor: style.borderColor,
+              padding: '20px',
+              borderRadius: '10px',
+              marginBottom: '20px'
             }}
           >
-            <h3 style={{
-              ...styles.categoryTitle,
-              color: categoryStyle.textColor,
-              borderLeft: `4px solid ${categoryStyle.textColor}`
-            }}>
-              {category.name}
+            <h3
+              className="category-title"
+              style={{
+                color: style.textColor,
+                borderBottom: `2px solid ${style.textColor}`,
+                paddingBottom: '10px'
+              }}
+            >
+              {categoryName}
             </h3>
-            <div style={styles.grid}>
-              {category.books.map((book, bookIndex) => (
+
+            <div className="booklist-grid">
+              {booksInCategory.map((book) => (
                 <BookCard
-                  key={bookIndex}
+                  key={book.id}
+                  id={book.id}
                   title={book.title}
                   author={book.author}
-                  image={book.image}
                   price={book.price}
+                  image={book.image}
+                  onViewDetails={() => handleViewDetails(book.id)}
                 />
               ))}
             </div>
-          </div>
+          </section>
         );
       })}
     </div>
@@ -240,5 +195,6 @@ const styles = {
     fontWeight: '500',
   },
 };
+
 
 export default BookList;

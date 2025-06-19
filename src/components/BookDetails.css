@@ -1,0 +1,41 @@
+.book-details {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 30px;
+  border: 2px solid #c7d2fe;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f0f4ff, #ffffff);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.15);
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.book-details:hover {
+  transform: scale(1.01);
+}
+
+.book-details img {
+  width: 270px;
+  height: auto;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.book-details h2 {
+  font-size: 30px;
+  color: #3b0764;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+
+.book-details p {
+  font-size: 18px;
+  margin: 12px 0;
+  color: #4b5563;
+  line-height: 1.6;
+}
+
+.book-details p strong {
+  color: #0c4a6e;
+}

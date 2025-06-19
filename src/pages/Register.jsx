@@ -7,9 +7,26 @@ const Register = () => {
     password: '',
   });
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    alert(`Registered: ${user.name}`);
+    try {
+      const response = await fetch('http://localhost:5000/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(user)
+      });
+      const data = await response.json();
+      if (response.ok) {
+        alert('Registered successfully!');
+        window.location.href = '/login';
+      } else {
+        alert(data.error || 'Registration failed');
+      }
+    } catch (err) {
+      alert('Registration failed');
+    }
   };
 
   return (
@@ -61,6 +78,7 @@ const styles = {
     flexDirection: 'column',
     gap: '12px'
   },
+ 
   input: {
     padding: '10px',
     fontSize: '16px',
@@ -70,12 +88,13 @@ const styles = {
   button: {
     padding: '10px',
     fontSize: '16px',
-    backgroundColor: '#007bff',
+    backgroundColor: '   #4B0082',
     color: '#fff',
     border: 'none',
     borderRadius: '4px',
     cursor: 'pointer'
-  }
+  },
+  
 };
 
 export default Register;

@@ -1,74 +1,38 @@
-
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import logo from '../assets/logo1.webp';
+import './Navbar.css'; 
 
-const Navbar = () => {
+function Navbar() {
+  const navigate = useNavigate();
+  const isUserLoggedIn = localStorage.getItem("userLoggedIn");
+
+  const handleLogout = () => {
+    localStorage.removeItem("userLoggedIn");
+    navigate('/login');
+  };
+
   return (
-    <nav style={styles.navbar}>
-      <div style={styles.logo}>
-        <h2> Online Bookstore</h2>
+    <nav className="navbar">
+      <div className="logo-container">
+        <img src={logo} alt="Logo" className="logo-image" />
+        <h2 className="logo-text">Bookstore</h2>
       </div>
-      <div style={styles.searchBox}>
-        <input type="text" placeholder="Search books..." style={styles.searchInput} />
-        <button style={styles.searchButton}>Search</button>
-      </div>
-      <div style={styles.navLinks}>
-        <Link to="/" style={styles.link}>Home</Link>
-        <Link to="/categories" style={styles.link}>Categories</Link>
-        <Link to="/cart" style={styles.link}>Cart</Link>
-        <Link to="/register" style={styles.link}>Register</Link>
-        <Link to="/login" style={styles.link}>Login</Link>
+
+      <div className="nav-links">
+        <Link to="/" className="link">Home</Link>
+        <Link to="/aboutus" className="link">AboutUs</Link>
+        <Link to="/categories" className="link">Categories</Link>
+        <Link to="/cart" className="link">Cart</Link>
+
+        {isUserLoggedIn ? (
+          <button onClick={handleLogout} className="logout-button">Logout</button>
+        ) : (
+          <Link to="/login" className="link">Login</Link>
+        )}
       </div>
     </nav>
   );
-};
-
-const styles = {
-  navbar: {
-    background: 'linear-gradient(to right, #4B0082, #800080)',
-    padding: '1rem 2rem',
-    display: 'flex',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    color: 'white',
-  },
-  logo: {
-    fontWeight: 'bold',
-  },
-  searchBox: {
-    display: 'flex',
-    flexGrow: 1,
-    maxWidth: '400px',
-    margin: '0 2rem',
-  },
-  searchInput: {
-    flex: 1,
-    padding: '0.5rem',
-    border: 'none',
-    borderRadius: '5px 0 0 5px',
-    fontSize: '1rem',
-  },
-  searchButton: {
-    backgroundColor: 'rgb(189, 52, 189)',
-    border: 'none',
-    padding: '0.5rem 1rem',
-    borderRadius: '0 5px 5px 0',
-    cursor: 'pointer',
-    fontWeight: 'bold',
-  },
-  navLinks: {
-    display: 'flex',
-    gap: '1rem',
-    flexWrap: 'wrap',
-  },
-  link: {
-    color: 'white',
-    textDecoration: 'none',
-    fontWeight: '500',
-    padding: '0.5rem',
-    transition: '0.3s',
-  },
-};
+}
 
 export default Navbar;

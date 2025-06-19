@@ -1,99 +1,109 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Pagination, Autoplay } from 'swiper/modules';
+import background from '../assets/bg-books.jpg';
+import Footer from '../components/Footer';
 import './Home.css';
 
-// Import fearured images
 import harry from '../assets/harry.jpg';
-import autumn from'../assets/autumn.jpg';
-import hobbit from'../assets/hobbit.jpg';
-import ontheRoad from '../assets/on the Road.jfif';
-import Sleppingmagic from'../assets/Slepping magic.jfif';
-import TotheForest from '../assets/To the Forest.png';
-import Hands from'../assets/hands.jfif';
-import Which from'../assets/which.png';
-import Inside from'../assets/Inside.png';
+import autumn from '../assets/autumn.jpg';
+import hobbit from '../assets/hobbit.jpg';
+import hands from '../assets/hands.jfif';
+import which from '../assets/which.png';
+import inside from '../assets/Inside.png';
+import gilded from '../assets/gilded.jpeg';
+import Moon from '../assets/Moon.jfif';
+import Charming from "../assets/charming.png";
+import How from"../assets/How.webp";
 
 const featuredBooks = [
-  {
-    title: 'Harry',
-    image: harry,
- 
-  },
- {
-  title:'Autumn',
-  image:autumn,
- },
- {
-  title:'habbit',
-  image: hobbit,
- },
- {
-  title:'on the Road',
-  image: ontheRoad,
- },
- {
-  title:'Slepping magic ',
-  image: Sleppingmagic  ,
-  
- },
- {
-  title:'To the Forest',
-  image: TotheForest,
- },
- {
-  title: 'Hands',
-  image: Hands,
-
-},
-{
-  title: 'Which',
-  image: Which,
-
-},
-{
-  title: 'Inside',
-  image: Inside,
-
-},
+  { title: 'Harry Potter', image: harry },
+  { title: 'Autumn Leaves', image: autumn },
+  { title: 'The Hobbit', image: hobbit },
+  { title: 'Helping Hands', image: hands },
+  { title: 'Which', image: which },
+  { title: 'Inside the Mind', image: inside },
+  { title: 'Gilded', image: gilded },
+  { title: 'Moon', image: Moon },
+  { title: 'Charming', image: Charming },
+  { title: 'How', image: How }
 ];
 
-
-
-
-
 const Home = () => {
+  const [books, setBooks] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:5000/books')
+      .then((response) => response.json())
+      .then((data) => setBooks(data))
+      .catch((error) => console.error('Error fetching books:', error));
+  }, []);
+
   return (
-    <div className="home-container">
-      <h1 className="home-title">Welcome to the Online Bookstore</h1>
-      <p className="home-subtitle">A World of Books at Your Fingertips.</p>
-      <p  className="home-tagline">Shop the Best Reads Online - Fast, Easy & Affordable!</p>
-      
+    <div
+      className="home-container"
+      style={{
+        minHeight: '100vh',
+        width: '100vw',
+        boxSizing: 'border-box',
+        display: 'flex',
+        flexDirection: 'column',
+        backgroundImage: `linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.95)), url(${background})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        paddingBottom: '0',
+        overflowX: 'hidden'
+      }}
+    >
+      <header className="home-header">
+        <h1 className="home-title">
+          Welcome to the <span className="highlight">Online</span> Bookstore
+        </h1>
+        <p className="home-subtitle">A WORLD OF BOOKS AT YOUR FINGERTIPS</p>
+        <p className="home-tagline">
+          Shop the Best Reads Online – <em>Fast, Easy & Affordable!</em>
+        </p>
+      </header>
 
-      <h1 className="featured-arrivel">Explore Our Featured Arrivals</h1>
-      <h2 className="featured-heading">Featured Books</h2>
-      
+      <section className="featured-section" style={{ flex: 1 }}>
+        <p className="featured-arrival">Explore Our Featured Arrivals</p>
+        <h2 className="featured-heading">Featured Books</h2>
 
-      <Swiper
-        modules={[Pagination, Autoplay]}
-        spaceBetween={30}
-        slidesPerView={1}
-        pagination={{ clickable: true }}
-        autoplay={{ delay: 3000 }}
-        loop={true}
-        className="book-swiper"
-      >
-        {featuredBooks.map((book, index) => (
-          <SwiperSlide key={index}>
-            <div className="book-card">
-              <img src={book.image} alt={book.title} className="book-image" />
-              <h4 className="book-title">{book.title}</h4>
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+        <Swiper
+          modules={[Pagination, Autoplay]}
+          spaceBetween={20}
+          slidesPerView={3}
+          pagination={{ clickable: true }}
+          autoplay={{ delay: 3000 }}
+          loop={true}
+          className="book-swiper"
+          breakpoints={{
+            320: { slidesPerView: 1 },
+            640: { slidesPerView: 2 },
+            1024: { slidesPerView: 3 },
+          }}
+        >
+          {featuredBooks.map((book, index) => (
+            <SwiperSlide key={index}>
+              <div className="book-card-modern">
+                <img
+                  src={book.image}
+                  alt={`${book.title} cover`}
+                  className="book-image-modern"
+                />
+                <div className="book-info-modern">
+                  <h4>{book.title}</h4>
+                </div>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </section>
+
+      <Footer />
     </div>
   );
 };

@@ -1,47 +1,101 @@
-
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
+function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Later we'll send this data to backend
-    alert(`Logging in with: ${email}`);
+    setIsLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch('http://localhost:5000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem('user', JSON.stringify(data.user));
+        // Admin email check
+        if (data.user.email === 'admin@bookstore.com') {
+          navigate('/admin/dashboard');
+        } else if (data.user.role === 'admin') {
+          navigate('/admin');
+        } else {
+          navigate('/');
+        }
+      } else {
+        setError(data.error || 'Incorrect email or password');
+      }
+    } catch (err) {
+      setError('Unable to contact the server');
+      console.error('Login error:', err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <div style={styles.container}>
-      <h2>Login</h2>
+      <h2 style={styles.heading}>Login</h2>
       <form onSubmit={handleLogin} style={styles.form}>
         <input
           type="email"
           placeholder="Email"
           value={email}
-          required
-          onChange={(e) => setEmail(e.target.value)}
           style={styles.input}
+          onChange={(e) => setEmail(e.target.value)}
+          required
         />
         <input
           type="password"
           placeholder="Password"
           value={password}
-          required
-          onChange={(e) => setPassword(e.target.value)}
           style={styles.input}
+          onChange={(e) => setPassword(e.target.value)}
+          required
         />
-        <button type="submit" style={styles.button}>Login</button>
+        <button type="submit" style={styles.button} disabled={isLoading}>
+          {isLoading ? 'Logging in...' : 'Login'}
+        </button>
       </form>
+      {error && <p style={{ ...styles.message, color: 'red' }}>{error}</p>}
+      <p style={{ marginTop: '1.5rem', textAlign: 'center' }}>
+        Don't have an account?{' '}
+        <a
+          href="/register"
+          style={{ color: '#4B0082', textDecoration: 'underline' }}
+        >
+          Register
+        </a>
+      </p>
     </div>
   );
-};
+}
 
 const styles = {
   container: {
     padding: '2rem',
     maxWidth: '400px',
-    margin: '0 auto',
+    margin: '5rem auto',
+    border: '1px solid #ccc',
+    borderRadius: '10px',
+    boxShadow: '0 0 10px rgba(0,0,0,0.1)',
+  },
+  heading: {
+    textAlign: 'center',
+    marginBottom: '1.5rem',
+    color: '#0A0A0A',
   },
   form: {
     display: 'flex',
@@ -51,13 +105,22 @@ const styles = {
   input: {
     padding: '0.5rem',
     fontSize: '1rem',
+    border: '1px solid #ccc',
+    borderRadius: '5px',
   },
   button: {
-    padding: '0.5rem',
+    padding: '0.7rem',
     backgroundColor: '#4B0082',
     color: 'white',
     border: 'none',
     borderRadius: '5px',
+    cursor: 'pointer',
+    fontWeight: 'bold',
+  },
+  message: {
+    marginTop: '1rem',
+    color: 'green',
+    textAlign: 'center',
   },
 };
 
