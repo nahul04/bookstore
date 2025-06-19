@@ -163,4 +163,38 @@ const BookList = () => {
   );
 };
 
+const styles = {
+  container: {
+    padding: '2rem',
+    maxWidth: '1200px',
+    margin: '0 auto',
+    textAlign: 'center',
+  },
+  grid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
+    gap: '1.5rem',
+    padding: '0 1rem',
+  },
+  mainTitle: {
+    fontSize: '2.5rem',
+    marginBottom: '2rem',
+    color: '#333',
+    fontWeight: '600',
+    textTransform: 'uppercase',
+    letterSpacing: '1px',
+  },
+  categorySection: {
+    marginBottom: '3rem',
+  },
+  categoryTitle: {
+    fontSize: '1.8rem',
+    marginBottom: '1.5rem',
+    textAlign: 'left',
+    paddingLeft: '1rem',
+    fontWeight: '500',
+  },
+};
+
+
 export default BookList;
